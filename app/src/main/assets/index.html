@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>India Pulse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Instrument+Serif&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#000; --bg2:#080808; --bg3:#0D0D0D; --hover:#141414;
+  --text:#F2F2F2; --text2:#999; --muted:#666; --line:#202020;
+  --pos:#36B37E; --neg:#E05A5A; --accent:#D6B36A;
+  --sans:'Inter',system-ui,sans-serif; --serif:'Instrument Serif',Georgia,serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:#000}
+body{background:var(--bg);color:var(--text);font:400 13px/1.5 var(--sans);-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:1px solid var(--accent);outline-offset:2px}
+
+/* Top bar */
+.top{border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:40px;font-size:11px;color:var(--muted)}
+.status{display:flex;gap:18px;align-items:center}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--pos);display:inline-block;margin-right:6px}
+.dot.stale{background:var(--neg)}
+.btn{background:transparent;border:1px solid var(--line);border-radius:4px;padding:3px 10px;font-size:11px;color:var(--text2);cursor:pointer;transition:all .15s}
+.btn:hover{background:var(--hover);color:var(--text);border-color:#333}
+
+/* Masthead */
+.mast{padding:40px 0 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+h1{font:400 44px/1 var(--serif);letter-spacing:-.01em}
+.mast p{color:var(--text2);font-size:12px;margin-top:10px;max-width:520px}
+.date{font-size:11px;color:var(--muted);text-align:right}
+
+/* Nav */
+.nav{border-top:1px solid var(--line);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:16px}
+.tabs{display:flex;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{background:none;border:0;padding:12px 14px 11px 0;margin-right:14px;font-size:12px;color:var(--muted);cursor:pointer;white-space:nowrap;border-bottom:1px solid transparent;transition:color .15s}
+.tab:hover{color:var(--text2)}
+.tab[aria-selected=true]{color:var(--text);border-bottom-color:var(--accent)}
+.search{background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:5px 10px;width:200px;font-size:12px;transition:border-color .15s}
+.search::placeholder{color:var(--muted)}
+.search:focus{border-color:#444;outline:none}
+
+/* Layout */
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:48px;padding:8px 0 80px}
+.sec-h{display:flex;justify-content:space-between;align-items:baseline;padding:22px 0 10px;border-bottom:1px solid var(--line)}
+.sec-h h2{font-size:15px;font-weight:500}
+.sec-h span{font-size:11px;color:var(--muted)}
+
+/* Lead */
+.lead{padding:22px 0 24px;border-bottom:1px solid var(--line)}
+.lead a{display:block}
+.lead h3{font:400 30px/1.15 var(--serif);letter-spacing:-.005em;transition:color .15s}
+.lead a:hover h3{color:var(--accent)}
+.lead .meta{margin-top:12px}
+
+/* Rows */
+.row{display:grid;grid-template-columns:64px 1fr;gap:16px;padding:14px 0;border-bottom:1px solid var(--line);transition:background .15s}
+.row:hover{background:var(--hover)}
+.row .t{font-size:11px;color:var(--muted);padding-top:2px;text-align:left}
+.row .h{font-size:14px;line-height:1.4;color:var(--text);font-weight:400}
+.row a:hover .h{color:var(--accent)}
+.meta{font-size:11px;color:var(--muted);margin-top:5px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.meta .src{color:var(--text2)}
+.badge{border:1px solid var(--line);border-radius:3px;padding:0 6px;font-size:10px;color:var(--muted);line-height:16px}
+.new{color:var(--accent);border-color:#3a3320}
+
+/* Sidebar */
+aside{padding-top:8px}
+table{width:100%;border-collapse:collapse}
+th{font-weight:400;font-size:10px;color:var(--muted);text-align:left;padding:8px 0;text-transform:uppercase;letter-spacing:.06em}
+td{padding:8px 0;border-top:1px solid var(--line);font-size:12px;color:var(--text2)}
+th.r,td.r{text-align:right}
+td.r{color:var(--text)}
+tr.click{cursor:pointer}
+tr.click:hover td{background:var(--hover)}
+tr.on td{color:var(--text)}
+.bar{height:2px;background:var(--line);margin-top:6px}
+.bar i{display:block;height:2px;background:var(--accent)}
+.note{font-size:11px;color:var(--muted);line-height:1.6;margin-top:22px;padding-top:14px;border-top:1px solid var(--line)}
+
+/* Skeleton */
+.sk{height:14px;background:linear-gradient(90deg,#0d0d0d,#161616,#0d0d0d);background-size:200% 100%;animation:sh 1.4s infinite;border-radius:2px;margin:18px 0}
+@keyframes sh{to{background-position:-200% 0}}
+.empty,.err{padding:40px 0;color:var(--muted);font-size:13px}
+.err{color:var(--neg)}
+
+@media (max-width:860px){
+  .grid{grid-template-columns:1fr;gap:0}
+  aside{order:-1;padding-bottom:8px}
+  h1{font-size:36px}
+  .lead h3{font-size:25px}
+  .date{text-align:left}
+  .nav{flex-direction:column;align-items:stretch;gap:0}
+  .search{width:100%;margin-bottom:10px}
+  .row{grid-template-columns:52px 1fr;gap:12px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="top"><div class="wrap">
+  <div class="status">
+    <span><i class="dot" id="dot"></i><span id="upd">Connecting…</span></span>
+    <span id="next"></span>
+  </div>
+  <button class="btn" id="refresh" aria-label="Refresh now">Refresh now</button>
+</div></div>
+
+<div class="wrap">
+  <header class="mast">
+    <div>
+      <h1>India Pulse</h1>
+      <p>Developments likely to move the Indian economy, markets and policy — monitored hourly from news wires and publishers.</p>
+    </div>
+    <div class="date" id="date"></div>
+  </header>
+
+  <div class="nav">
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <input class="search" id="q" type="search" placeholder="Filter headlines" aria-label="Filter headlines">
+  </div>
+
+  <div class="grid">
+    <main id="feed" aria-live="polite">
+      <div class="sk"></div><div class="sk"></div><div class="sk"></div><div class="sk"></div>
+    </main>
+    <aside>
+      <table id="cov"><thead><tr><th>Coverage · 24h</th><th class="r">Stories</th></tr></thead><tbody></tbody></table>
+      <p class="note">Auto-refreshes every hour. Headlines link to the original publisher. Stories are grouped by search topic, not editorial judgement — read the source before acting on anything.</p>
+    </aside>
+  </div>
+</div>
+
+<script>
+const HOUR = 3600 * 1000;
+let state = { items: [], topics: [], active: 'all', q: '', loadedAt: 0, seen: new Set(), fresh: new Set(), updatedAt: null, errors: [] };
+const $ = id => document.getElementById(id);
+const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function ago(ts){
+  const m = Math.max(0, Math.round((Date.now() - ts) / 60000));
+  if (m < 1) return 'now';
+  if (m < 60) return m + 'm';
+  const h = Math.floor(m / 60);
+  return h < 24 ? h + 'h' : Math.floor(h / 24) + 'd';
+}
+const label = id => (state.topics.find(t => t.id === id) || {}).label || id;
+
+/* ---------- Data layer ----------
+   1) If served by server.js, use /api/news.
+   2) Otherwise (e.g. file:// double-click) fetch Google News RSS directly via public CORS proxies. */
+const TOPICS = [
+  { id: 'markets',  label: 'Markets & Rates',      q: 'Sensex OR Nifty OR RBI OR rupee OR "bond yield" India' },
+  { id: 'economy',  label: 'Economy & Data',       q: 'India GDP OR inflation OR "fiscal deficit" OR GST collections OR PMI' },
+  { id: 'policy',   label: 'Policy & Regulation',  q: 'India government policy OR SEBI OR "Union Cabinet" OR "Finance Ministry"' },
+  { id: 'trade',    label: 'Trade & Geopolitics',  q: 'India trade deal OR tariff OR exports OR "India US" OR "India China" OR border' },
+  { id: 'energy',   label: 'Energy & Commodities', q: 'India crude oil OR gold OR "fuel prices" OR coal OR power demand' },
+  { id: 'global',   label: 'Global Spillovers',    q: 'Fed OR "global markets" OR "FII" OR "foreign investors" India impact' },
+  { id: 'corporate',label: 'Corporate & Deals',    q: 'India earnings OR IPO OR "RBI penalty" OR "bank results" OR FDI' },
+];
+const PROXIES = [
+  u => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u),
+  u => 'https://corsproxy.io/?' + encodeURIComponent(u),
+  u => 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(u),
+];
+const withTimeout = (p, ms) => Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), ms))]);
+// Android app bridge: native HTTP (no CORS, no proxies). See MainActivity.kt
+const nativeCbs = {}; let nativeId = 0;
+window.__nativeDone = (id, ok, b64) => {
+  const cb = nativeCbs[id]; if (!cb) return; delete nativeCbs[id];
+  if (!ok) return cb.rej(new Error(atob(b64)));
+  const bytes = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+  cb.res(new TextDecoder('utf-8').decode(bytes));
+};
+const nativeFetch = url => new Promise((res, rej) => { const id = ++nativeId; nativeCbs[id] = { res, rej }; window.Android.fetch(id, url); });
+
+async function fetchText(url){
+  if (window.Android) return withTimeout(nativeFetch(url), 20000);
+  let last;
+  for (const p of PROXIES) {
+    try {
+      const r = await withTimeout(fetch(p(url)), 12000);
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      const t = await r.text();
+      if (t.includes('<item>')) return t;
+      throw new Error('empty feed');
+    } catch (e) { last = e; }
+  }
+  throw last || new Error('all proxies failed');
+}
+function parseFeed(xml, topic){
+  const doc = new DOMParser().parseFromString(xml, 'text/xml');
+  return [...doc.querySelectorAll('item')].map(el => {
+    const g = n => (el.querySelector(n) || {}).textContent || '';
+    let title = g('title').trim(), source = g('source').trim();
+    if (source && title.endsWith(' - ' + source)) title = title.slice(0, -(source.length + 3));
+    else if (!source) { const i = title.lastIndexOf(' - '); if (i > 0) { source = title.slice(i + 3); title = title.slice(0, i); } }
+    return { title, link: g('link').trim(), source: source || 'Unknown', ts: Date.parse(g('pubDate')), topic: topic.id };
+  }).filter(i => i.title && i.link && !isNaN(i.ts));
+}
+async function clientFetch(){
+  const results = await Promise.allSettled(TOPICS.map(async t => {
+    const u = 'https://news.google.com/rss/search?q=' + encodeURIComponent(t.q + ' when:1d') + '&hl=en-IN&gl=IN&ceid=IN:en';
+    return parseFeed(await fetchText(u), t);
+  }));
+  const errors = results.filter(r => r.status === 'rejected').map(r => r.reason.message);
+  const seen = new Map();
+  results.forEach(r => r.status === 'fulfilled' && r.value.forEach(it => {
+    const k = it.title.toLowerCase().replace(/[^a-z0-9]+/g, ' ').slice(0, 80);
+    if (!seen.has(k)) seen.set(k, it);
+  }));
+  return { items: [...seen.values()].sort((a, b) => b.ts - a.ts).slice(0, 300),
+           topics: TOPICS.map(({ id, label }) => ({ id, label })), updatedAt: Date.now(), errors };
+}
+async function getData(manual){
+  if (location.protocol.startsWith('http') && !location.hostname.endsWith('github.io')) {
+    try {
+      const r = await fetch('/api/news' + (manual ? '?force=1' : ''), { cache: 'no-store' });
+      if (r.ok) { const d = await r.json(); if (d.items && d.items.length) return d; }
+    } catch (e) { /* fall through to direct fetch */ }
+  }
+  return clientFetch();
+}
+
+async function load(manual){
+  const btn = $('refresh');
+  if (manual) btn.textContent = 'Refreshing…';
+  try {
+    const d = await getData(manual);
+    if (!d.items.length) throw new Error('No stories returned' + (d.errors && d.errors[0] ? ' (' + d.errors[0] + ')' : ''));
+    const first = state.seen.size === 0;
+    state.fresh = new Set();
+    for (const it of d.items) {
+      if (!state.seen.has(it.link)) { if (!first) state.fresh.add(it.link); state.seen.add(it.link); }
+    }
+    state.items = d.items; state.topics = d.topics; state.updatedAt = d.updatedAt; state.errors = d.errors || [];
+    state.loadedAt = Date.now();
+    renderTabs(); render(); status();
+  } catch (e) {
+    $('dot').classList.add('stale'); $('upd').textContent = 'Update failed — retrying next hour';
+    if (!state.items.length) $('feed').innerHTML = '<div class="err">Could not load news. ' + esc(e.message) + '</div>';
+  }
+  btn.textContent = 'Refresh now';
+}
+
+function status(){
+  if (!state.updatedAt) { $('upd').textContent = 'Waiting for first fetch…'; return; }
+  const age = Date.now() - state.updatedAt;
+  $('dot').classList.toggle('stale', age > 2 * HOUR);
+  $('upd').textContent = 'Updated ' + new Date(state.updatedAt).toLocaleTimeString('en-IN', {hour:'2-digit',minute:'2-digit'}) + ' IST';
+}
+function tick(){
+  if (!state.loadedAt) return;
+  const left = Math.max(0, state.loadedAt + HOUR - Date.now());
+  const m = Math.floor(left / 60000), s = Math.floor(left % 60000 / 1000);
+  $('next').textContent = 'Next refresh in ' + m + ':' + String(s).padStart(2, '0');
+  if (left === 0) load();
+  $('date').textContent = new Date().toLocaleDateString('en-IN', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
+}
+
+function renderTabs(){
+  const tabs = [{id:'all', label:'All'}, ...state.topics];
+  $('tabs').innerHTML = tabs.map(t =>
+    `<button class="tab" role="tab" data-id="${t.id}" aria-selected="${t.id === state.active}">${esc(t.label)}</button>`).join('');
+}
+
+function filtered(){
+  const q = state.q.toLowerCase();
+  return state.items.filter(i =>
+    (state.active === 'all' || i.topic === state.active) &&
+    (!q || i.title.toLowerCase().includes(q) || i.source.toLowerCase().includes(q)));
+}
+
+function meta(i){
+  return `<div class="meta"><span class="src">${esc(i.source)}</span><span class="badge">${esc(label(i.topic))}</span>` +
+    (state.fresh.has(i.link) ? '<span class="badge new">New</span>' : '') + '</div>';
+}
+
+function render(){
+  const list = filtered();
+  const feed = $('feed');
+  if (!list.length) { feed.innerHTML = '<div class="empty">No stories match.</div>'; }
+  else {
+    const [lead, ...rest] = list;
+    feed.innerHTML =
+      `<div class="lead"><a href="${esc(lead.link)}" target="_blank" rel="noopener noreferrer"><h3>${esc(lead.title)}</h3>${meta(lead)}</a></div>` +
+      `<div class="sec-h"><h2>Latest</h2><span>${list.length} stories</span></div>` +
+      rest.slice(0, 120).map(i =>
+        `<a class="row" href="${esc(i.link)}" target="_blank" rel="noopener noreferrer"><div class="t">${ago(i.ts)}</div><div><div class="h">${esc(i.title)}</div>${meta(i)}</div></a>`).join('');
+  }
+  // coverage table
+  const counts = {}; state.items.forEach(i => counts[i.topic] = (counts[i.topic] || 0) + 1);
+  const max = Math.max(1, ...Object.values(counts));
+  $('cov').querySelector('tbody').innerHTML =
+    `<tr class="click ${state.active==='all'?'on':''}" data-id="all"><td>All topics</td><td class="r">${state.items.length}</td></tr>` +
+    state.topics.map(t => `<tr class="click ${state.active===t.id?'on':''}" data-id="${t.id}"><td>${esc(t.label)}<div class="bar"><i style="width:${(counts[t.id]||0)/max*100}%"></i></div></td><td class="r">${counts[t.id] || 0}</td></tr>`).join('');
+}
+
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-id]');
+  if (el) { state.active = el.dataset.id; renderTabs(); render(); }
+});
+$('q').addEventListener('input', e => { state.q = e.target.value; render(); });
+$('refresh').addEventListener('click', () => load(true));
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden && Date.now() - state.loadedAt > HOUR) load();
+});
+
+load();
+setInterval(tick, 1000);
+setInterval(() => load(), HOUR);           // hourly auto-refresh
+setInterval(() => { render(); status(); }, 60000); // keep relative times fresh
+</script>
+</body>
+</html>
