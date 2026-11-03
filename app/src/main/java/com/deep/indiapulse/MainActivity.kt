@@ -58,7 +58,22 @@ class MainActivity : Activity() {
         @JavascriptInterface
         fun testAlert() {
             runOnUiThread { askNotificationPermission() }
-            Notifier.post(this@MainActivity, 1, "India Pulse test alert", "Notifications are working. Tap to open a sample story.", "https://news.google.com/")
+            Notifier.post(this@MainActivity, 1, "India Pulse test alert", "Notifications are working. Tap to open a sample story.", "https://news.google.com/", "India Pulse test alert", "India Pulse")
+        }
+
+        /** Reader mode: resolve the Google link, download the publisher page, return {u,h,pw} as JSON. */
+        @JavascriptInterface
+        fun fetchArticle(id: Int, url: String) {
+            if (!url.startsWith("https://news.google.com/")) {
+                reply(id, false, "blocked host".toByteArray()); return
+            }
+            thread {
+                try {
+                    reply(id, true, ArticleFetcher.fetchArticle(url).toByteArray())
+                } catch (e: Exception) {
+                    reply(id, false, (e.message ?: e.javaClass.simpleName).toByteArray())
+                }
+            }
         }
 
         @JavascriptInterface
@@ -103,9 +118,30 @@ class MainActivity : Activity() {
         WorkManager.getInstance(this).cancelUniqueWork("alerts")
     }
 
+    // A tapped notification opens the story page (native reader); falls back to the web reader if it has no title.
+    private var pendingStory: Triple<String, String, String>? = null
+    private var pageReady = false
+
+    private fun handleIntent(i: Intent?) {
+        val url = i?.getStringExtra("url") ?: return
+        val title = i.getStringExtra("title") ?: ""
+        if (title.isEmpty()) { openReader(url); return }
+        pendingStory = Triple(title, url, i.getStringExtra("source") ?: "")
+        flushStory()
+    }
+
+    private fun flushStory() {
+        val p = pendingStory ?: return
+        if (!pageReady) return
+        pendingStory = null
+        web.evaluateJavascript(
+            "window.__openStory && window.__openStory(${JSONObject.quote(p.first)},${JSONObject.quote(p.second)},${JSONObject.quote(p.third)})", null
+        )
+    }
+
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        intent.getStringExtra("url")?.let { openReader(it) }
+        handleIntent(intent)
     }
 
     private fun dp(v: Int) = (v * resources.displayMetrics.density).toInt()
@@ -202,7 +238,11 @@ class MainActivity : Activity() {
             settings.domStorageEnabled = true
             addJavascriptInterface(Bridge(), "Android")
             webViewClient = object : WebViewClient() {
-                // Headline taps open in the in-app reader
+                override fun onPageFinished(v: WebView, url: String) {
+                    pageReady = true
+                    flushStory()
+                }
+                // Links inside the app (e.g. "Open original", source rows) open in the web reader pane
                 override fun shouldOverrideUrlLoading(v: WebView, r: WebResourceRequest): Boolean {
                     val u = r.url
                     if (u.scheme == "http" || u.scheme == "https") {
@@ -220,7 +260,7 @@ class MainActivity : Activity() {
             addView(readerPane, FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT))
         })
         web.loadUrl("file:///android_asset/index.html")
-        intent?.getStringExtra("url")?.let { openReader(it) }   // opened from a notification
+        handleIntent(intent)   // opened from a notification
     }
 
     override fun onResume() {
@@ -242,11 +282,13 @@ class MainActivity : Activity() {
 
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
-        when {
-            readerPane.visibility == View.VISIBLE ->
-                if (reader.canGoBack()) reader.goBack() else closeReader()
-            web.canGoBack() -> web.goBack()
-            else -> super.onBackPressed()
+        // 1) web reader pane  2) native story page (asks the page)  3) leave the app
+        if (readerPane.visibility == View.VISIBLE) {
+            if (reader.canGoBack()) reader.goBack() else closeReader()
+            return
+        }
+        web.evaluateJavascript("(window.__closeStory ? window.__closeStory() : false)") { r ->
+            if (r != "true") finish()
         }
     }
 }

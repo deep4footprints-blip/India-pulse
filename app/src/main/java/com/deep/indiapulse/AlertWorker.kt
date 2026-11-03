@@ -85,7 +85,7 @@ class AlertWorker(ctx: Context, p: WorkerParameters) : Worker(ctx, p) {
             }.take(4)
             toNotify.forEach { s ->
                 val star = if (watch?.containsMatchIn(s.title) == true) "★ " else ""
-                Notifier.post(applicationContext, s.link.hashCode(), star + s.title, s.source, s.link)
+                Notifier.post(applicationContext, s.link.hashCode(), star + s.title, s.source, s.link, s.title, s.source)
             }
         }
         // record everything seen (including ones we skipped) so they are never re-evaluated

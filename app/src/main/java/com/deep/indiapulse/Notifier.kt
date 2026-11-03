@@ -27,13 +27,15 @@ object Notifier {
         Build.VERSION.SDK_INT < 33 ||
             ContextCompat.checkSelfPermission(ctx, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
 
-    /** Tapping the notification opens the story in the in-app reader. */
-    fun post(ctx: Context, id: Int, title: String, text: String, url: String) {
+    /** Tapping the notification opens the story page (native reader). */
+    fun post(ctx: Context, id: Int, title: String, text: String, url: String, storyTitle: String, source: String) {
         if (!canPost(ctx)) return
         ensureChannel(ctx)
         val intent = Intent(ctx, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
             putExtra("url", url)
+            putExtra("title", storyTitle)
+            putExtra("source", source)
         }
         val pi = PendingIntent.getActivity(ctx, id, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         val n = NotificationCompat.Builder(ctx, CHANNEL)
