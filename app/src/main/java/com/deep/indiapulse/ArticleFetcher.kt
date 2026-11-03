@@ -67,13 +67,17 @@ object ArticleFetcher {
         return try { if (sniff != null) java.nio.charset.Charset.forName(sniff) else Charsets.UTF_8 } catch (e: Exception) { Charsets.UTF_8 }
     }
 
+    private fun charsOf(vararg codes: Int): String = String(CharArray(codes.size) { codes[it].toChar() })
+
     /** Old-style Google News ids embed the publisher URL; new-style ("AU_yqL…") do not. */
     private fun offlineDecode(id: String): String? {
         val padded = id + "=".repeat((4 - id.length % 4) % 4)
         val raw = try { Base64.decode(padded, Base64.URL_SAFE) } catch (e: Exception) { return null }
         var s = String(raw, Charsets.ISO_8859_1)
-        if (s.startsWith("\u0008\u0013"")) s = s.substring(3)
-        if (s.endsWith("Ò\u0001\u0000")) s = s.dropLast(3)
+        val prefix = charsOf(0x08, 0x13, 0x22)
+        val suffix = charsOf(0xD2, 0x01, 0x00)
+        if (s.startsWith(prefix)) s = s.substring(3)
+        if (s.endsWith(suffix)) s = s.dropLast(3)
         if (s.isEmpty()) return null
         val len = s[0].code
         s = if (len >= 0x80) s.substring(minOf(2, s.length), minOf(s.length, len + 1)) else s.substring(1, minOf(s.length, len + 1))
