@@ -17,183 +17,423 @@
 html{background:#000}
 body{background:var(--bg);color:var(--text);font:400 13px/1.5 var(--sans);-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
 a{color:inherit;text-decoration:none}
-.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.wrap{max-width:860px;margin:0 auto;padding:0 18px}
 button,input{font:inherit;color:inherit}
+button{cursor:pointer}
 :focus-visible{outline:1px solid var(--accent);outline-offset:2px}
+[hidden]{display:none!important}
 
-/* Top bar */
+/* top bar */
 .top{border-bottom:1px solid var(--line)}
-.top .wrap{display:flex;align-items:center;justify-content:space-between;height:40px;font-size:11px;color:var(--muted)}
-.status{display:flex;gap:18px;align-items:center}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:38px;font-size:11px;color:var(--muted)}
+.status{display:flex;gap:14px;align-items:center;white-space:nowrap;overflow:hidden}
 .dot{width:6px;height:6px;border-radius:50%;background:var(--pos);display:inline-block;margin-right:6px}
 .dot.stale{background:var(--neg)}
-.btn{background:transparent;border:1px solid var(--line);border-radius:4px;padding:3px 10px;font-size:11px;color:var(--text2);cursor:pointer;transition:all .15s}
+.btn{background:transparent;border:1px solid var(--line);border-radius:4px;padding:3px 10px;font-size:11px;color:var(--text2);transition:all .15s}
 .btn:hover{background:var(--hover);color:var(--text);border-color:#333}
+.btn.pri{color:#000;background:var(--accent);border-color:var(--accent)}
+.btn.pri:hover{background:#e3c47d;color:#000}
 
-/* Masthead */
-.mast{padding:40px 0 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
-h1{font:400 44px/1 var(--serif);letter-spacing:-.01em}
-.mast p{color:var(--text2);font-size:12px;margin-top:10px;max-width:520px}
+/* masthead + nav */
+.mast{padding:22px 0 16px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px}
+h1{font:400 38px/1 var(--serif);letter-spacing:-.01em}
 .date{font-size:11px;color:var(--muted);text-align:right}
+.main{display:flex;border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+.main::-webkit-scrollbar{display:none}
+.main button{background:none;border:0;border-bottom:1px solid transparent;padding:11px 0 10px;margin-right:20px;font-size:12px;color:var(--muted);white-space:nowrap;transition:color .15s}
+.main button:hover{color:var(--text2)}
+.main button.on{color:var(--text);border-bottom-color:var(--accent)}
 
-/* Nav */
-.nav{border-top:1px solid var(--line);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:16px}
-.tabs{display:flex;overflow-x:auto;scrollbar-width:none}
+/* feed controls */
+.tabs{display:flex;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--line)}
 .tabs::-webkit-scrollbar{display:none}
-.tab{background:none;border:0;padding:12px 14px 11px 0;margin-right:14px;font-size:12px;color:var(--muted);cursor:pointer;white-space:nowrap;border-bottom:1px solid transparent;transition:color .15s}
+.tab{background:none;border:0;padding:10px 12px 9px 0;margin-right:12px;font-size:11px;color:var(--muted);white-space:nowrap;border-bottom:1px solid transparent}
 .tab:hover{color:var(--text2)}
-.tab[aria-selected=true]{color:var(--text);border-bottom-color:var(--accent)}
-.search{background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:5px 10px;width:200px;font-size:12px;transition:border-color .15s}
+.tab.on{color:var(--text);border-bottom-color:var(--text2)}
+.tools{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.search{flex:1;min-width:0;background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:5px 10px;font-size:12px}
 .search::placeholder{color:var(--muted)}
 .search:focus{border-color:#444;outline:none}
+.seg{display:flex;border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.seg button{background:none;border:0;padding:4px 10px;font-size:11px;color:var(--muted)}
+.seg button.on{background:var(--hover);color:var(--text)}
 
-/* Layout */
-.grid{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:48px;padding:8px 0 80px}
-.sec-h{display:flex;justify-content:space-between;align-items:baseline;padding:22px 0 10px;border-bottom:1px solid var(--line)}
-.sec-h h2{font-size:15px;font-weight:500}
-.sec-h span{font-size:11px;color:var(--muted)}
-
-/* Lead */
-.lead{padding:22px 0 24px;border-bottom:1px solid var(--line)}
-.lead a{display:block}
-.lead h3{font:400 30px/1.15 var(--serif);letter-spacing:-.005em;transition:color .15s}
+/* lead + rows */
+.lead{padding:20px 0 20px;border-bottom:1px solid var(--line)}
+.lead h3{font:400 27px/1.15 var(--serif);letter-spacing:-.005em;transition:color .15s}
 .lead a:hover h3{color:var(--accent)}
-.lead .meta{margin-top:12px}
-
-/* Rows */
-.row{display:grid;grid-template-columns:64px 1fr;gap:16px;padding:14px 0;border-bottom:1px solid var(--line);transition:background .15s}
-.row:hover{background:var(--hover)}
-.row .t{font-size:11px;color:var(--muted);padding-top:2px;text-align:left}
-.row .h{font-size:14px;line-height:1.4;color:var(--text);font-weight:400}
-.row a:hover .h{color:var(--accent)}
-.meta{font-size:11px;color:var(--muted);margin-top:5px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.sec-h{display:flex;justify-content:space-between;align-items:baseline;padding:18px 0 8px;border-bottom:1px solid var(--line)}
+.sec-h h2{font-size:14px;font-weight:500}
+.sec-h span{font-size:11px;color:var(--muted)}
+.row{display:grid;grid-template-columns:44px 1fr;gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}
+.row .t{font-size:11px;color:var(--muted);padding-top:2px}
+.row .h{font-size:14px;line-height:1.4;display:block;transition:color .15s}
+.row .h:hover{color:var(--accent)}
+.why{font-size:12px;color:var(--text2);margin-top:4px}
+.meta{font-size:11px;color:var(--muted);margin-top:6px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .meta .src{color:var(--text2)}
-.badge{border:1px solid var(--line);border-radius:3px;padding:0 6px;font-size:10px;color:var(--muted);line-height:16px}
-.new{color:var(--accent);border-color:#3a3320}
+.badge{border:1px solid var(--line);border-radius:3px;padding:0 6px;font-size:10px;color:var(--muted);line-height:16px;white-space:nowrap}
+.badge.hi{color:var(--accent);border-color:#4a3f22}
+.badge.med{color:var(--text2);border-color:#333}
+.badge.pos{color:var(--pos);border-color:#1d4a38}
+.badge.neg{color:var(--neg);border-color:#4f2a2a}
+.badge.watch{color:var(--accent);border-color:#4a3f22}
+.badge.new{color:var(--accent);border-color:#3a3320}
+.lnk{background:none;border:0;color:var(--text2);font-size:11px;padding:0;text-decoration:underline;text-decoration-color:#333;text-underline-offset:3px}
+.lnk:hover{color:var(--accent)}
 
-/* Sidebar */
-aside{padding-top:8px}
+/* infographic */
+.ig{margin-top:12px;padding:12px 0 4px;border-top:1px dashed var(--line)}
+.ig-h{display:flex;gap:10px;align-items:center;font-size:11px;color:var(--text2);flex-wrap:wrap}
+.meter{display:flex;gap:2px}
+.meter i{width:14px;height:5px;background:var(--line);display:block}
+.meter i.on{background:var(--accent)}
+.dir.pos{color:var(--pos)} .dir.neg{color:var(--neg)} .dir.mix,.dir.neu{color:var(--text2)}
+.ig-sec{font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px}
+.figs{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.fig{background:var(--bg);padding:8px 10px}
+.fig b{display:block;font:400 22px/1.1 var(--serif);color:var(--text)}
+.fig span{font-size:10px;color:var(--muted)}
+.chain{list-style:none;border-left:1px solid var(--line);margin-left:4px}
+.chain li{position:relative;padding:2px 0 8px 14px;font-size:12px;color:var(--text)}
+.chain li::before{content:"";position:absolute;left:-4px;top:7px;width:7px;height:7px;background:var(--bg);border:1px solid var(--accent);border-radius:50%}
+.ig svg{display:block;width:100%;height:auto}
+.ig text{fill:var(--text2);font:10px var(--sans)}
+.ig .neg{fill:var(--neg)} .ig .pos{fill:var(--pos)} .ig .axis{stroke:var(--line)} .ig .dotc{fill:var(--accent)}
+.ig .foot{font-size:10px;color:var(--muted);margin:10px 0 6px}
+
+/* generic views */
+.view{padding-bottom:70px}
+.panel-h{padding:18px 0 8px;font-size:11px;color:var(--muted)}
 table{width:100%;border-collapse:collapse}
 th{font-weight:400;font-size:10px;color:var(--muted);text-align:left;padding:8px 0;text-transform:uppercase;letter-spacing:.06em}
-td{padding:8px 0;border-top:1px solid var(--line);font-size:12px;color:var(--text2)}
+td{padding:9px 0;border-top:1px solid var(--line);font-size:12px;color:var(--text2);vertical-align:middle}
 th.r,td.r{text-align:right}
-td.r{color:var(--text)}
-tr.click{cursor:pointer}
-tr.click:hover td{background:var(--hover)}
-tr.on td{color:var(--text)}
-.bar{height:2px;background:var(--line);margin-top:6px}
-.bar i{display:block;height:2px;background:var(--accent)}
-.note{font-size:11px;color:var(--muted);line-height:1.6;margin-top:22px;padding-top:14px;border-top:1px solid var(--line)}
+td.n{color:var(--text)}
+.spark{width:84px;height:22px;display:block}
+.spark polyline{fill:none;stroke:var(--text2);stroke-width:1.2}
+.spark circle{fill:var(--accent)}
+.up{color:var(--accent)} .dn{color:var(--muted)}
+.pill{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:6px;background:var(--muted)}
+.pill.pos{background:var(--pos)} .pill.neg{background:var(--neg)}
+.note{font-size:11px;color:var(--muted);line-height:1.6;padding:12px 0}
 
-/* Skeleton */
+/* ask */
+.askbox{display:flex;gap:8px;padding:14px 0 10px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.chip{background:none;border:1px solid var(--line);border-radius:3px;padding:3px 9px;font-size:11px;color:var(--text2)}
+.chip:hover{border-color:#444;color:var(--text)}
+.ans p{padding:14px 0 6px;font-size:14px;line-height:1.55}
+.ans .stat{font-size:11px;color:var(--muted);padding-bottom:10px}
+
+/* topics / alerts */
+.trow{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.trow .lab{flex:1;min-width:0;font-size:13px;color:var(--text);overflow:hidden;text-overflow:ellipsis}
+.trow .lab small{display:block;font-size:10px;color:var(--muted)}
+.trow .x{background:none;border:0;color:var(--muted);font-size:14px;padding:2px 6px}
+.trow .x:hover{color:var(--neg)}
+.addbox{padding:14px 0;border-bottom:1px solid var(--line)}
+.addbox .r{display:flex;gap:8px;margin-top:8px;align-items:center;flex-wrap:wrap}
+.switch{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line)}
+.tog{width:36px;height:20px;border-radius:10px;border:1px solid #333;background:var(--bg);position:relative}
+.tog::after{content:"";position:absolute;top:3px;left:3px;width:12px;height:12px;border-radius:50%;background:var(--muted);transition:all .15s}
+.tog.on{border-color:var(--accent)} .tog.on::after{left:19px;background:var(--accent)}
+
+/* states */
 .sk{height:14px;background:linear-gradient(90deg,#0d0d0d,#161616,#0d0d0d);background-size:200% 100%;animation:sh 1.4s infinite;border-radius:2px;margin:18px 0}
 @keyframes sh{to{background-position:-200% 0}}
-.empty,.err{padding:40px 0;color:var(--muted);font-size:13px}
+.empty,.err{padding:36px 0;color:var(--muted);font-size:13px}
 .err{color:var(--neg)}
-
-@media (max-width:860px){
-  .grid{grid-template-columns:1fr;gap:0}
-  aside{order:-1;padding-bottom:8px}
-  h1{font-size:36px}
-  .lead h3{font-size:25px}
-  .date{text-align:left}
-  .nav{flex-direction:column;align-items:stretch;gap:0}
-  .search{width:100%;margin-bottom:10px}
-  .row{grid-template-columns:52px 1fr;gap:12px}
-}
+@media (min-width:700px){ .figs{grid-template-columns:repeat(4,1fr)} h1{font-size:44px} .lead h3{font-size:32px} .row{grid-template-columns:56px 1fr} }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 <div class="top"><div class="wrap">
-  <div class="status">
-    <span><i class="dot" id="dot"></i><span id="upd">Connecting…</span></span>
-    <span id="next"></span>
-  </div>
-  <button class="btn" id="refresh" aria-label="Refresh now">Refresh now</button>
+  <div class="status"><span><i class="dot" id="dot"></i><span id="upd">Connecting…</span></span><span id="next"></span></div>
+  <button class="btn" id="refresh">Refresh</button>
 </div></div>
 
 <div class="wrap">
   <header class="mast">
-    <div>
-      <h1>India Pulse</h1>
-      <p>Developments likely to move the Indian economy, markets and policy — monitored hourly from news wires and publishers.</p>
-    </div>
+    <h1>India Pulse</h1>
     <div class="date" id="date"></div>
   </header>
+  <nav class="main" id="nav">
+    <button data-view="feed" class="on">Feed</button>
+    <button data-view="trends">Trends</button>
+    <button data-view="ask">Ask</button>
+    <button data-view="topics">Topics</button>
+    <button data-view="alerts">Alerts</button>
+  </nav>
 
-  <div class="nav">
-    <div class="tabs" role="tablist" id="tabs"></div>
-    <input class="search" id="q" type="search" placeholder="Filter headlines" aria-label="Filter headlines">
-  </div>
-
-  <div class="grid">
-    <main id="feed" aria-live="polite">
-      <div class="sk"></div><div class="sk"></div><div class="sk"></div><div class="sk"></div>
-    </main>
-    <aside>
-      <table id="cov"><thead><tr><th>Coverage · 24h</th><th class="r">Stories</th></tr></thead><tbody></tbody></table>
-      <p class="note">Auto-refreshes every hour. Headlines link to the original publisher. Stories are grouped by search topic, not editorial judgement — read the source before acting on anything.</p>
-    </aside>
-  </div>
+  <section class="view" id="v-feed">
+    <div class="tabs" id="tabs"></div>
+    <div class="tools">
+      <input class="search" id="q" type="search" placeholder="Filter headlines" aria-label="Filter headlines">
+      <div class="seg" id="sort"><button data-sort="impact">Impact</button><button data-sort="latest">Latest</button></div>
+    </div>
+    <main id="feed"><div class="sk"></div><div class="sk"></div><div class="sk"></div><div class="sk"></div></main>
+  </section>
+  <section class="view" id="v-trends" hidden></section>
+  <section class="view" id="v-ask" hidden></section>
+  <section class="view" id="v-topics" hidden></section>
+  <section class="view" id="v-alerts" hidden></section>
 </div>
 
-<script>
-const HOUR = 3600 * 1000;
-let state = { items: [], topics: [], active: 'all', q: '', loadedAt: 0, seen: new Set(), fresh: new Set(), updatedAt: null, errors: [] };
-const $ = id => document.getElementById(id);
-const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-
-function ago(ts){
-  const m = Math.max(0, Math.round((Date.now() - ts) / 60000));
-  if (m < 1) return 'now';
-  if (m < 60) return m + 'm';
-  const h = Math.floor(m / 60);
-  return h < 24 ? h + 'h' : Math.floor(h / 24) + 'd';
+<!-- ============ LOGIC (DOM-free; unit-tested in Node) ============ -->
+<script id="logic">
+const STOP = new Set('a an the and or of to in on for at by with from as is are was were be been it its this that these those after over under amid into than then who what when why how says say said new news latest india indian will may could might not no yes up down'.split(' '));
+const SYN = { surge:'UP', jump:'UP', soar:'UP', rally:'UP', rise:'UP', gain:'UP', climb:'UP', spike:'UP', advance:'UP', fall:'DN', drop:'DN', slump:'DN', plunge:'DN', tumble:'DN', slide:'DN', decline:'DN', tank:'DN', crash:'DN', sink:'DN', slip:'DN', hold:'STEADY', unchanged:'STEADY', keep:'STEADY', steady:'STEADY' };
+function stem(w){ if (w.length > 3 && w.endsWith('s') && !w.endsWith('ss')) w = w.slice(0, -1); return SYN[w] || w; }
+function tokens(t){
+  const s = t.toLowerCase().replace(/[’']s\b/g, '').replace(/[^a-z0-9%.₹$ ]+/g, ' ');
+  return [...new Set(s.split(/\s+/).map(w => w.replace(/^\.+|\.+$/g, '')).filter(w => w.length > 1 && !STOP.has(w)).map(stem))];
 }
-const label = id => (state.topics.find(t => t.id === id) || {}).label || id;
+function simOK(a, b){
+  let inter = 0; for (const x of a) if (b.has(x)) inter++;
+  if (inter < 2) return false;
+  const jac = inter / (a.size + b.size - inter), ov = inter / Math.min(a.size, b.size);
+  return (inter >= 3 && (ov >= 0.6 || jac >= 0.4)) || (inter >= 2 && jac >= 0.6);
+}
+const SRC_W = [[/reserve bank|press information|\bpib\b|\bsebi\b|ministry/i,1.2],[/reuters|bloomberg|\bpti\b|ani news|business ?line|business standard|mint|financial express/i,0.9],[/economic times|et markets|the hindu|indian express|times of india|hindustan times|cnbc|ndtv profit|moneycontrol|business today/i,0.6]];
+function srcWeight(s){ for (const [re, w] of SRC_W) if (re.test(s)) return w; return 0.3; }
 
-/* ---------- Data layer ----------
-   1) If served by server.js, use /api/news.
-   2) Otherwise (e.g. file:// double-click) fetch Google News RSS directly via public CORS proxies. */
-const TOPICS = [
-  { id: 'markets',  label: 'Markets & Rates',      q: 'Sensex OR Nifty OR RBI OR rupee OR "bond yield" India' },
-  { id: 'economy',  label: 'Economy & Data',       q: 'India GDP OR inflation OR "fiscal deficit" OR GST collections OR PMI' },
-  { id: 'policy',   label: 'Policy & Regulation',  q: 'India government policy OR SEBI OR "Union Cabinet" OR "Finance Ministry"' },
-  { id: 'trade',    label: 'Trade & Geopolitics',  q: 'India trade deal OR tariff OR exports OR "India US" OR "India China" OR border' },
-  { id: 'energy',   label: 'Energy & Commodities', q: 'India crude oil OR gold OR "fuel prices" OR coal OR power demand' },
-  { id: 'global',   label: 'Global Spillovers',    q: 'Fed OR "global markets" OR "FII" OR "foreign investors" India impact' },
-  { id: 'corporate',label: 'Corporate & Deals',    q: 'India earnings OR IPO OR "RBI penalty" OR "bank results" OR FDI' },
+function clusterItems(items){
+  const sorted = [...items].sort((a, b) => b.ts - a.ts);
+  const clusters = [];
+  for (const it of sorted) {
+    const tk = new Set(tokens(it.title)); it._tk = tk;
+    let best = null;
+    for (const c of clusters) {
+      if (Math.abs(c.ts - it.ts) > 48 * 3600e3) continue;
+      if (c.items.some(m => simOK(tk, m._tk))) { best = c; break; }
+    }
+    if (best) { best.items.push(it); best.first = Math.min(best.first, it.ts); }
+    else clusters.push({ items: [it], ts: it.ts, first: it.ts });
+  }
+  for (const c of clusters) {
+    c.sources = [...new Set(c.items.map(i => i.source))];
+    c.topics = new Set(c.items.map(i => i.topic));
+    c.rep = [...c.items].sort((a, b) => srcWeight(b.source) - srcWeight(a.source) || b.ts - a.ts)[0];
+    c.title = c.rep.title; c.link = c.rep.link; c.key = c.rep.link;
+    c.tk = new Set(c.items.flatMap(i => [...i._tk]));
+  }
+  return clusters;
+}
+
+/* ---- impact rules: regex → signed weight (+ good / − bad for India), sector tilts, explanation, transmission chain ---- */
+const R = (id, theme, re, w, sec, why, chain) => ({ id, theme, re, w, sec, why, chain });
+const UPW = '(?:surge|surges|jump|jumps|rise|rises|rally|rallies|rall\\w*|spike|spikes|climb|climbs|soar|soars|higher|up|gain|gains|hits? [\\w-]+ high|hotter|accelerat\\w*)';
+const DNW = '(?:fall|falls|fell|drop|drops|slump|slumps|slide|slides|ease|eases|eased|tumble|tumbles|decline|declines|lower|down|slip|slips|cool|cools|plunge|plunges|dip|dips|tank|tanks|crash\\w*|sink|sinks)';
+const RULES = [
+  R('crude_up','Crude & energy', new RegExp('\\b(crude|brent|wti|oil prices?)\\b[^.;]{0,50}\\b'+UPW,'i'), -2, {Energy:-1,Macro:-2,Autos:-1,FMCG:-1}, "Costlier crude raises India's import bill and inflation risk", ['Crude oil ↑','Import bill ↑','Current-account & rupee pressure','Fuel prices / OMC margins']),
+  R('crude_down','Crude & energy', new RegExp('\\b(crude|brent|wti|oil prices?)\\b[^.;]{0,50}\\b'+DNW,'i'), 2, {Energy:1,Macro:2,Autos:1,FMCG:1}, 'Cheaper crude eases import bill, inflation and margins', ['Crude oil ↓','Import bill ↓','Inflation & CAD relief','Margins for oil users']),
+  R('rupee_weak','Rupee & FX', new RegExp('\\brupee\\b[^.;]{0,50}\\b(?:fall|falls|fell|weak\\w*|slump\\w*|drop\\w*|slide\\w*|record low|depreciat\\w*|slip\\w*|tumble\\w*|lower|down)','i'), -2, {Macro:-2,IT:1,Pharma:1}, 'A weaker rupee lifts import costs but helps exporters like IT and pharma', ['Rupee ↓','Imports costlier','Imported inflation ↑','Exporters gain / FII returns ↓']),
+  R('rupee_strong','Rupee & FX', new RegExp('\\brupee\\b[^.;]{0,50}\\b(?:gain\\w*|strengthen\\w*|rise\\w*|rall\\w*|appreciat\\w*|recover\\w*|firm\\w*|higher|up|jump\\w*)','i'), 1, {Macro:1,IT:-1}, 'A firmer rupee cools import costs; slightly negative for exporters', ['Rupee ↑','Imports cheaper','Inflation easier','Exporter margins ↓']),
+  R('rbi_cut','Rates & RBI', /\b(?:rbi|reserve bank|mpc)\b[^.;]{0,60}\b(?:cut|cuts|lower\w*|reduc\w*|slash\w*)[^.;]{0,30}\b(?:repo|rates?|crr|policy)/i, 3, {Banks:1,'Real Estate':2,Autos:1,Macro:1}, 'Rate cuts cheapen loans and support credit-driven sectors', ['Repo rate ↓','Loan costs ↓','Credit demand ↑','Housing & autos']),
+  R('rbi_hike','Rates & RBI', /\b(?:rbi|reserve bank|mpc)\b[^.;]{0,60}\b(?:hike\w*|rais\w*|increas\w*)[^.;]{0,30}\b(?:repo|rates?|crr|policy)/i, -3, {Banks:-1,'Real Estate':-2,Autos:-1,Macro:-1}, 'Rate hikes raise borrowing costs and slow credit demand', ['Repo rate ↑','Loan costs ↑','Credit demand ↓','Housing & autos']),
+  R('rbi_hold','Rates & RBI', /\b(?:rbi|reserve bank|mpc)\b[^.;]{0,60}\b(?:hold\w*|keeps?|unchanged|status quo|pause\w*|steady)/i, 0, {Banks:0,Macro:0}, 'RBI on hold: markets now watch inflation and growth guidance', ['RBI holds rates','Guidance in focus','Bond yields & bank margins','Rate-cut timing']),
+  R('infl_up','Inflation', new RegExp('\\b(?:inflation|cpi|wpi|food prices?|vegetable prices?)\\b[^.;]{0,50}\\b'+UPW+'|\\b(?:inflation|cpi)\\b[^.;]{0,30}\\b(?:high|higher|pick\\w*)','i'), -1, {FMCG:-1,Macro:-1,Banks:-1}, 'Hotter inflation delays rate cuts and squeezes household budgets', ['Prices ↑','RBI less likely to cut','Bond yields ↑','Consumer demand ↓']),
+  R('infl_down','Inflation', new RegExp('\\b(?:inflation|cpi|wpi|food prices?)\\b[^.;]{0,50}\\b(?:ease\\w*|cool\\w*|fall\\w*|fell|drop\\w*|declin\\w*|lower|soften\\w*|slow\\w*|moderat\\w*|dip\\w*|low\\w*)','i'), 1, {FMCG:1,Macro:1,Banks:1}, 'Softer inflation opens room for rate cuts and helps consumption', ['Prices ↓','Room for rate cut','Bond yields ↓','Consumer demand ↑']),
+  R('growth_up','Growth data', /\b(?:gdp|growth|iip|industrial output|pmi|manufacturing|services)\b[^.;]{0,50}\b(?:beat\w*|strong\w*|expand\w*|rise\w*|jump\w*|surge\w*|higher|accelerat\w*|improv\w*|robust|best|record|up)\b/i, 1, {Macro:2,Infra:1,Banks:1}, 'Stronger growth data lifts earnings expectations and credit demand', ['Activity ↑','Corporate earnings ↑','Credit demand ↑','Equity sentiment ↑']),
+  R('growth_down','Growth data', /\b(?:gdp|growth|iip|industrial output|pmi|manufacturing|services)\b[^.;]{0,50}\b(?:slow\w*|contract\w*|miss\w*|weak\w*|fall\w*|fell|drop\w*|declin\w*|lower|downgrad\w*|cut\w*|slump\w*|dip\w*|sluggish)\b/i, -1, {Macro:-2,Infra:-1,Banks:-1}, 'Weak growth data pressures earnings and may prompt policy support', ['Activity ↓','Earnings downgrades','Credit demand ↓','Policy support likely']),
+  R('fii_out','FII flows', /\b(?:fiis?|fpis?|foreign (?:institutional )?(?:investors?|funds?|portfolio))\b[^.;]{0,50}\b(?:sell\w*|sold|outflows?|pull\w*|exit\w*|dump\w*|withdr\w*|offload\w*)/i, -2, {Markets:-2,Macro:-1,Banks:-1}, 'Foreign selling pressures indices and the rupee', ['FII selling','Equity supply ↑','Index pressure','Rupee ↓']),
+  R('fii_in','FII flows', /\b(?:fiis?|fpis?|foreign (?:institutional )?(?:investors?|funds?|portfolio))\b[^.;]{0,50}\b(?:buy\w*|bought|inflows?|invest\w*|pour\w*|return\w*)/i, 2, {Markets:2,Macro:1,Banks:1}, 'Foreign buying supports indices and the rupee', ['FII buying','Equity demand ↑','Index support','Rupee ↑']),
+  R('tariff','Trade & tariffs', /\b(?:tariffs?|import dut(?:y|ies)|sanctions?|export ban|trade war|trade barriers?|anti-dumping|trade curbs?)\b/i, -2, {Macro:-1,IT:-1,Pharma:-1,Metals:-1}, 'Trade barriers hit exporters and global demand', ['Tariffs / curbs','Export competitiveness ↓','Exporter margins ↓','Growth drag']),
+  R('trade_deal','Trade & tariffs', /\b(?:trade (?:deal|pact|agreement)|fta|free trade)\b/i, 2, {Macro:1,Pharma:1,IT:1}, 'Trade pacts widen market access for exporters', ['Trade deal','Market access ↑','Exports ↑','Sector earnings ↑']),
+  R('mkt_up','Markets mood', new RegExp('\\b(?:sensex|nifty|bse|nse|dalal street|markets?)\\b[^.;]{0,50}\\b'+UPW.replace('(?:','(?:record|zoom\\w*|bounce\\w*|'),'i'), 1, {Markets:1}, 'Broad market strength lifts sentiment and IPO appetite', ['Index ↑','Risk appetite ↑','IPO & flows ↑','Wealth effect']),
+  R('mkt_dn','Markets mood', new RegExp('\\b(?:sensex|nifty|bse|nse|dalal street|markets?)\\b[^.;]{0,50}\\b'+DNW.replace('(?:','(?:bleed\\w*|sell-?off|lose\\w*|'),'i'), -1, {Markets:-1}, 'Market weakness dents sentiment and investor wealth', ['Index ↓','Risk appetite ↓','Flows ↓','Wealth effect ↓']),
+  R('geo','Geopolitics', /\b(?:war|conflict|missiles?|airstrikes?|escalat\w*|border (?:tension|clash)\w*|terror\w*|attacks?)\b/i, -1, {Energy:-1,Markets:-1,Macro:-1}, 'Geopolitical risk lifts crude and triggers risk-off flows', ['Geopolitical risk ↑','Risk-off flows','Crude & gold ↑','Equity volatility ↑']),
+  R('fed_dove','Global rates (Fed)', /\b(?:fed|federal reserve|fomc|powell|us rates?)\b[^.;]{0,60}\b(?:cuts?|dovish|eas\w*|lower\w*)/i, 1, {Markets:1,Macro:1,IT:1}, 'Fed easing weakens the dollar and eases pressure on emerging markets', ['Fed eases','US yields ↓','Dollar ↓','EM inflows incl. India']),
+  R('fed_hawk','Global rates (Fed)', /\b(?:fed|federal reserve|fomc|powell|us rates?)\b[^.;]{0,60}\b(?:hikes?|hawkish|higher for longer|tighten\w*)/i, -1, {Markets:-1,Macro:-1}, 'A hawkish Fed strengthens the dollar and pulls money out of emerging markets', ['Fed hawkish','US yields ↑','Dollar ↑','EM outflows incl. India']),
+  R('gst_up','Fiscal & budget', /\b(?:gst|tax) (?:collections?|revenues?|mop-?up)\b[^.;]{0,40}\b(?:rise\w*|record|jump\w*|high\w*|grow\w*|up|surge\w*|strong)/i, 1, {Macro:1,Infra:1}, 'Strong tax collections give the government room to spend', ['Tax receipts ↑','Fiscal room ↑','Capex capacity ↑','Infra demand']),
+  R('fiscal_bad','Fiscal & budget', /\b(?:fiscal deficit|current account deficit|cad|trade deficit|subsid\w+|borrowing)\b[^.;]{0,50}\b(?:widen\w*|rise\w*|higher|overshoot\w*|increas\w*|jump\w*|surge\w*|swell\w*)/i, -1, {Macro:-1,Banks:-1}, 'Wider deficits raise borrowing and bond-yield pressure', ['Deficit ↑','Govt borrowing ↑','Bond yields ↑','Crowding-out risk']),
+  R('fiscal_good','Fiscal & budget', /\b(?:fiscal deficit|current account deficit|cad|trade deficit|subsid\w+|borrowing)\b[^.;]{0,50}\b(?:narrow\w*|shrink\w*|lower|contain\w*|eas\w*|fall\w*|fell|improv\w*)/i, 1, {Macro:1,Banks:1}, 'Narrower deficits support the rupee and bond yields', ['Deficit ↓','Borrowing ↓','Bond yields ↓','Rupee support']),
+  R('capex','Fiscal & budget', /\b(?:capex|capital expenditure|infrastructure|budget)\b[^.;]{0,50}\b(?:boost\w*|increas\w*|hike\w*|allocat\w*|rais\w*|push\w*|outlay)/i, 1, {Infra:2,Metals:1,Macro:1}, 'Higher government capex lifts infrastructure and materials demand', ['Capex ↑','Order books ↑','Cement, steel, roads','Jobs & growth']),
+  R('sebi','Regulation', /\b(?:sebi)\b[^.;]{0,60}\b(?:ban\w*|penalt\w*|fine\w*|probe\w*|crack\w*|curb\w*|restrict\w*|order\w*|notice\w*|investigat\w*)/i, -1, {Markets:-1}, 'Regulatory action can hit named firms and tighten market rules', ['SEBI action','Compliance cost ↑','Named entities hit','Market conduct tightens']),
+  R('earn_up','Corporate earnings', /\b(?:profit|net profit|pat|earnings|revenue)\b[^.;]{0,40}\b(?:jump\w*|surge\w*|rise\w*|beat\w*|grow\w*|up|soar\w*|higher|record)/i, 1, {Markets:1}, 'Earnings strength supports the stock and sector read-through', ['Earnings beat','Estimates ↑','Stock re-rating','Sector read-through']),
+  R('earn_dn','Corporate earnings', /\b(?:profit|net profit|pat|earnings|revenue)\b[^.;]{0,40}\b(?:fall\w*|fell|drop\w*|declin\w*|miss\w*|slump\w*|dip\w*|lower|loss|plunge\w*|down)/i, -1, {Markets:-1}, 'Earnings weakness pressures the stock and sector read-through', ['Earnings miss','Estimates ↓','Stock de-rating','Sector read-through']),
+  R('gold','Gold & imports', /\bgold\b[^.;]{0,40}\b(?:record|surge\w*|jump\w*|rall\w*|soar\w*|hits?)/i, -1, {Macro:-1}, 'Record gold prices widen the import bill', ['Gold ↑','Import bill ↑','CAD ↑','Rupee pressure']),
+  R('mons_bad','Monsoon & agri', /\b(?:monsoon|rainfall|el ni[nñ]o|drought|kharif|rabi|crop\w*)\b[^.;]{0,50}\b(?:deficit|weak|below|delay\w*|drought|shortfall|damage\w*|poor|hit|dry)/i, -1, {Agri:-2,FMCG:-1,Macro:-1}, 'A weak monsoon hurts crops, rural demand and food inflation', ['Rain deficit','Crop output ↓','Food inflation ↑','Rural demand ↓']),
+  R('mons_good','Monsoon & agri', /\b(?:monsoon|rainfall|kharif|rabi|crop\w*)\b[^.;]{0,50}\b(?:above|good|normal|bumper|strong|surplus|record|better|abundant)/i, 1, {Agri:2,FMCG:1,Macro:1}, 'A good monsoon lifts crops, rural demand and eases food prices', ['Good rains','Crop output ↑','Food inflation ↓','Rural demand ↑']),
+  R('rate_up','Rating & outlook', /\bupgrad\w*\b[^.;]{0,40}\b(?:india|rating|outlook|gdp|growth|forecast)/i, 1, {Macro:1,Markets:1}, 'Upgrades signal improving credit or growth outlook', ['Upgrade','Confidence ↑','Funding costs ↓','Flows ↑']),
+  R('rate_dn','Rating & outlook', /\bdowngrad\w*\b[^.;]{0,40}\b(?:india|rating|outlook|gdp|growth|forecast)/i, -1, {Macro:-1,Markets:-1}, 'Downgrades signal weaker credit or growth outlook', ['Downgrade','Confidence ↓','Funding costs ↑','Flows ↓']),
+  R('npa','Banking stress', /\b(?:npas?|bad loans?|asset quality|loan defaults?|write-?offs?)\b/i, -1, {Banks:-2}, 'Asset-quality stress hits bank profits and lending appetite', ['Bad loans ↑','Provisions ↑','Profit ↓','Lending appetite ↓']),
+  R('exp_up','Trade & tariffs', /\bexports?\b[^.;]{0,40}\b(?:rise\w*|grow\w*|jump\w*|surge\w*|record|up|higher|strong)/i, 1, {Macro:1}, 'Rising exports support growth and the current account', ['Exports ↑','CAD ↓','Rupee support','Manufacturing demand']),
+  R('exp_dn','Trade & tariffs', /\bexports?\b[^.;]{0,40}\b(?:fall\w*|fell|drop\w*|declin\w*|slump\w*|dip\w*|down|lower|contract\w*)/i, -1, {Macro:-1}, 'Falling exports weigh on growth and the current account', ['Exports ↓','CAD ↑','Rupee pressure','Manufacturing demand ↓']),
 ];
+const SECTORS = {
+  Banks:/\b(bank|banks|nbfc|loan|credit|npa|hdfc|icici|sbi|axis bank|kotak|lender)\b/i, IT:/\b(infosys|tcs|wipro|hcl|it services|software|tech mahindra)\b/i,
+  Energy:/\b(crude|oil|gas|fuel|petrol|diesel|ongc|reliance|coal|power|renewable|solar|opec)\b/i, Autos:/\b(auto|autos|car|cars|ev|evs|maruti|tata motors|mahindra|two-wheeler|tractor)\b/i,
+  Pharma:/\b(pharma|drug|usfda|hospital|sun pharma|cipla)\b/i, FMCG:/\b(fmcg|hul|nestle|consumer|rural demand|food prices?)\b/i,
+  Metals:/\b(steel|aluminium|copper|metal|iron ore|tata steel|jsw|vedanta|hindalco)\b/i, Infra:/\b(infra|infrastructure|capex|road|roads|rail|railway|cement|construction|port|airport|l&t)\b/i,
+  'Real Estate':/\b(real estate|housing|realty|dlf|home loan|property)\b/i, Telecom:/\b(telecom|jio|airtel|vodafone|5g|spectrum)\b/i,
+  Agri:/\b(monsoon|crop|crops|kharif|rabi|farm|farmers|msp|fertili[sz]er|agri)\b/i, Markets:/\b(sensex|nifty|ipo|sebi|stocks?|equity|equities|fii|fpi|mutual fund|dalal street)\b/i,
+  Macro:/\b(gdp|inflation|cpi|rbi|rupee|fiscal|deficit|gst|budget|pmi|tariff|fed)\b/i,
+};
+const IMP = /\b(rbi|repo|mpc|budget|gdp|cpi|inflation|fed|fomc|tariffs?|crude|brent|rupee|sebi|fiscal|gst|trade deal|war|sanctions?|downgrade|upgrade|default|crash|record|plunge|surge|ceasefire|opec)\b/gi;
+const FIG_RE = /(?:(?:₹|rs\.?\s?|inr\s?|us\$|\$)\s?\d[\d,]*(?:\.\d+)?(?:\s?(?:lakh crore|crore|cr|trillion|tn|billion|bn|million|mn))?|\d[\d,]*(?:\.\d+)?\s?(?:%|per cent|percent|bps|basis points|lakh crore|crore|trillion|billion|million|points|pts))/gi;
+
+function extractFigures(items, rep){
+  const out = [], seen = new Set();
+  const ordered = [rep, ...items.filter(i => i !== rep)];
+  for (const it of ordered) {
+    const t = it.title; FIG_RE.lastIndex = 0; let m;
+    while ((m = FIG_RE.exec(t)) && out.length < 4) {
+      const v = m[0].trim(); const key = v.toLowerCase().replace(/\s+/g, '');
+      if (seen.has(key)) continue; seen.add(key);
+      const before = t.slice(0, m.index).replace(/[^\w\s%$₹.-]/g, ' ').trim().split(/\s+/).filter(w => w && !STOP.has(w.toLowerCase())).slice(-3).join(' ');
+      out.push({ v, ctx: before || 'figure in headline' });
+    }
+    if (out.length >= 4) break;
+  }
+  return out;
+}
+
+function analyze(c, now){
+  now = now || Date.now();
+  const titles = c.items.map(i => i.title);
+  const hits = RULES.filter(r => titles.some(t => r.re.test(t)));
+  const net = hits.reduce((s, r) => s + r.w, 0);
+  const pos = hits.some(r => r.w > 0), neg = hits.some(r => r.w < 0);
+  const dir = (pos && neg) ? (net >= 2 ? 'pos' : net <= -2 ? 'neg' : 'mix') : net > 0 ? 'pos' : net < 0 ? 'neg' : 'neu';
+  const tilt = new Map();
+  for (const r of hits) for (const [s, v] of Object.entries(r.sec)) tilt.set(s, (tilt.get(s) || 0) + v);
+  const text = titles.join(' . ');
+  for (const [s, re] of Object.entries(SECTORS)) if (!tilt.has(s) && re.test(text)) tilt.set(s, 0);
+  const sectors = [...tilt.entries()].map(([name, t]) => ({ name, tilt: Math.max(-3, Math.min(3, t)) })).sort((a, b) => Math.abs(b.tilt) - Math.abs(a.tilt) || a.name.localeCompare(b.name)).slice(0, 5);
+  const top = [...hits].sort((a, b) => Math.abs(b.w) - Math.abs(a.w))[0];
+  const impKw = new Set((text.match(IMP) || []).map(s => s.toLowerCase())).size;
+  const srcW = Math.max(...c.sources.map(srcWeight));
+  const rec = (now - c.ts) < 3 * 3600e3 ? 0.5 : 0;
+  const score = Math.min(5, hits.reduce((s, r) => s + Math.abs(r.w), 0) * 1.2) + Math.min(3, impKw * 0.6) + Math.log2(Math.max(1, c.sources.length)) * 0.9 + srcW + rec;
+  const level = score >= 5 ? 'High' : score >= 3 ? 'Medium' : 'Low';
+  c.impact = {
+    score, level, dir, net, sectors, rules: hits,
+    themes: [...new Set(hits.map(r => r.theme))],
+    why: top ? top.why : (sectors[0] ? 'Relevant to ' + sectors[0].name : 'General India economy coverage'),
+    chain: top ? top.chain : null,
+    figures: extractFigures(c.items, c.rep),
+  };
+  return c;
+}
+
+/* ---- watch / mute helpers ---- */
+const escRe = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+function termsRegex(terms){ const t = terms.filter(Boolean).map(s => escRe(s.trim())).filter(Boolean); return t.length ? new RegExp('\\b(?:' + t.join('|') + ')\\b', 'i') : null; }
+function topicQuery(terms){ return terms.map(t => /\s/.test(t) ? '"' + t + '"' : t).join(' OR ') + (/india/i.test(terms.join(' ')) ? '' : ' India'); }
+
+/* ---- trend history: hist[day][key] = {n, net} ---- */
+function recordHistory(clusters, hist, counted, day){
+  hist[day] = hist[day] || {};
+  for (const c of clusters) {
+    const keys = [...c.impact.themes.map(t => 'T:' + t), ...c.impact.sectors.map(s => 'S:' + s.name)];
+    const sign = c.impact.dir === 'pos' ? 1 : c.impact.dir === 'neg' ? -1 : 0;
+    for (const it of c.items) {
+      if (counted[it.link]) continue;
+      counted[it.link] = day;
+      for (const k of keys) { const e = hist[day][k] || (hist[day][k] = { n: 0, net: 0 }); e.n++; e.net += sign; }
+    }
+  }
+  const days = Object.keys(hist).sort(); while (days.length > 21) delete hist[days.shift()];
+  const keep = new Set(days);
+  for (const l of Object.keys(counted)) if (!keep.has(counted[l])) delete counted[l];
+}
+
+/* ---- Ask the news: extractive, on-device ---- */
+const ASK_STOP = new Set('what whats happen happened story stories news about impact today week tell show me any anything there latest biggest top important major key main headline headlines matter matters how is are do does for the on in of and to a this last days day recent really going now tonight morning yesterday negative positive risk risks worry worries worrying bad good boost upside downside threat threats concern concerns hurt hurts benefit benefits opportunity opportunities tailwind tailwinds with from by at it its'.split(' '));
+function answerQuery(q, items, now){
+  now = now || Date.now();
+  const ql = q.toLowerCase();
+  const days = /\b(today|24 ?h|last 24|morning|tonight|now)\b/.test(ql) ? 1 : /\b(week|7 ?d)\b/.test(ql) ? 7 : /\b(yesterday|2 days)\b/.test(ql) ? 2 : 3;
+  const want = /\b(negative|risk|risks|worr\w*|bad|threat\w*|concern\w*|hurt\w*|downside)\b/.test(ql) ? 'neg' : /\b(positive|good|boost\w*|tailwind\w*|opportunit\w*|upside|benefit\w*)\b/.test(ql) ? 'pos' : null;
+  const biggest = /\b(biggest|top|important|major|key|main|headlines?|matter\w*)\b/.test(ql);
+  let sector = null; for (const [s, re] of Object.entries(SECTORS)) if (s !== 'Macro' && s !== 'Markets' && (re.test(ql) || new RegExp('\\b' + escRe(s.toLowerCase()) + '\\b').test(ql))) { sector = s; break; }
+  const rawWords = ql.replace(/[^a-z0-9%$₹ ]+/g, ' ').split(/\s+/).filter(w => w && !ASK_STOP.has(w));
+  const qt = tokens(rawWords.join(' ')).filter(w => !['UP', 'DN', 'STEADY'].includes(w));
+  const win = items.filter(i => i.ts >= now - days * 864e5);
+  let cl = clusterItems(win).map(c => analyze(c, now));
+  const total = cl.length;
+  if (sector) cl = cl.filter(c => c.impact.sectors.some(s => s.name === sector));
+  if (want) cl = cl.filter(c => c.impact.dir === want || c.impact.dir === 'mix');
+  const textual = qt.filter(w => !(sector && SECTORS[sector].test(w)));
+  if (textual.length) {
+    cl.forEach(c => { c._rel = textual.filter(w => c.tk.has(w) || [...c.tk].some(t => t.length > 3 && (t.startsWith(w) || w.startsWith(t)))).length; });
+    cl = cl.filter(c => c._rel > 0);
+  } else cl.forEach(c => c._rel = 0);
+  cl.sort((a, b) => (b._rel * 2 + b.impact.score) - (a._rel * 2 + a.impact.score));
+  const top = cl.slice(0, 6);
+  const sources = new Set(cl.flatMap(c => c.sources)).size;
+  const cnt = d => cl.filter(c => c.impact.dir === d).length;
+  const secCount = {}; cl.forEach(c => c.impact.sectors.forEach(s => secCount[s.name] = (secCount[s.name] || 0) + 1));
+  const topSec = Object.entries(secCount).sort((a, b) => b[1] - a[1]).slice(0, 3).map(e => e[0]);
+  const label = days === 1 ? 'the last 24 hours' : 'the last ' + days + ' days';
+  let summary;
+  if (!cl.length) summary = `No matching stories in ${label}. This app only searches headlines it has collected from your followed topics, so try a broader word or add the topic under Topics.`;
+  else summary = `${cl.length} ${cl.length === 1 ? 'story' : 'stories'} from ${sources} ${sources === 1 ? 'source' : 'sources'} in ${label}` + (cl.length > 1 ? `: ${cnt('neg')} negative, ${cnt('pos')} positive, ${cnt('mix') + cnt('neu')} mixed or neutral for India.` : '.') + (topSec.length ? ` Most touched: ${topSec.join(', ')}.` : '');
+  return { summary, clusters: top, total, days, matched: cl.length };
+}
+</script>
+
+<!-- ============ UI ============ -->
+<script id="ui">
+const HOUR = 3600e3;
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const LS = {
+  get(k, d){ try { const v = localStorage.getItem('ip.' + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+  set(k, v){ try { localStorage.setItem('ip.' + k, JSON.stringify(v)); } catch (e) {} },
+};
+const DEFAULT_TOPICS = () => [
+  { id:'markets',   label:'Markets & Rates',      q:'Sensex OR Nifty OR RBI OR rupee OR "bond yield" India', terms:['sensex','nifty','rupee','bond yield'], kind:'follow', builtin:true },
+  { id:'economy',   label:'Economy & Data',       q:'India GDP OR inflation OR "fiscal deficit" OR GST collections OR PMI', terms:['gdp','inflation','fiscal deficit','pmi'], kind:'follow', builtin:true },
+  { id:'policy',    label:'Policy & Regulation',  q:'India government policy OR SEBI OR "Union Cabinet" OR "Finance Ministry"', terms:['sebi','union cabinet','finance ministry'], kind:'follow', builtin:true },
+  { id:'trade',     label:'Trade & Geopolitics',  q:'India trade deal OR tariff OR exports OR "India US" OR "India China" OR border', terms:['tariff','trade deal','exports'], kind:'follow', builtin:true },
+  { id:'energy',    label:'Energy & Commodities', q:'India crude oil OR gold OR "fuel prices" OR coal OR power demand', terms:['crude','gold','fuel prices','coal'], kind:'follow', builtin:true },
+  { id:'global',    label:'Global Spillovers',    q:'Fed OR "global markets" OR "FII" OR "foreign investors" India impact', terms:['fed','fii','global markets'], kind:'follow', builtin:true },
+  { id:'corporate', label:'Corporate & Deals',    q:'India earnings OR IPO OR "RBI penalty" OR "bank results" OR FDI', terms:['ipo','earnings','fdi'], kind:'follow', builtin:true },
+];
+const S = {
+  topics: LS.get('topics', null) || DEFAULT_TOPICS(),
+  cfg: Object.assign({ sort:'impact', alerts:{ on:false, mode:'both' } }, LS.get('cfg', {})),
+  hist: LS.get('hist', {}), counted: LS.get('counted', {}), archive: LS.get('archive', []),
+  view:'feed', active:'all', q:'', items:[], clusters:[], loadedAt:0, updatedAt:null, errors:[],
+  seen:new Set(), fresh:new Set(), notified:new Set(), first:true, openKeys:new Set(), byKey:new Map(),
+};
+const saveTopics = () => { LS.set('topics', S.topics); syncNative(); };
+const saveCfg = () => { LS.set('cfg', S.cfg); syncNative(); };
+
+/* ---------- data layer ---------- */
 const PROXIES = [
   u => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u),
   u => 'https://corsproxy.io/?' + encodeURIComponent(u),
   u => 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(u),
 ];
 const withTimeout = (p, ms) => Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), ms))]);
-// Android app bridge: native HTTP (no CORS, no proxies). See MainActivity.kt
 const nativeCbs = {}; let nativeId = 0;
 window.__nativeDone = (id, ok, b64) => {
   const cb = nativeCbs[id]; if (!cb) return; delete nativeCbs[id];
-  if (!ok) return cb.rej(new Error(atob(b64)));
   const bytes = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
-  cb.res(new TextDecoder('utf-8').decode(bytes));
+  const txt = new TextDecoder('utf-8').decode(bytes);
+  ok ? cb.res(txt) : cb.rej(new Error(txt));
 };
 const nativeFetch = url => new Promise((res, rej) => { const id = ++nativeId; nativeCbs[id] = { res, rej }; window.Android.fetch(id, url); });
-
+const serverMode = () => location.protocol.startsWith('http') && !location.hostname.endsWith('github.io');
 async function fetchText(url){
   if (window.Android) return withTimeout(nativeFetch(url), 20000);
   let last;
+  if (serverMode()) { // own server (server.js) is the most reliable route
+    try { const r = await withTimeout(fetch('/api/rss?url=' + encodeURIComponent(url)), 15000); if (r.ok) { const t = await r.text(); if (t.includes('<item>')) return t; } } catch (e) { last = e; }
+  }
   for (const p of PROXIES) {
     try {
       const r = await withTimeout(fetch(p(url)), 12000);
       if (!r.ok) throw new Error('HTTP ' + r.status);
-      const t = await r.text();
-      if (t.includes('<item>')) return t;
-      throw new Error('empty feed');
+      const t = await r.text(); if (t.includes('<item>')) return t; throw new Error('empty feed');
     } catch (e) { last = e; }
   }
-  throw last || new Error('all proxies failed');
+  throw last || new Error('all routes failed');
 }
 function parseFeed(xml, topic){
   const doc = new DOMParser().parseFromString(xml, 'text/xml');
@@ -205,118 +445,279 @@ function parseFeed(xml, topic){
     return { title, link: g('link').trim(), source: source || 'Unknown', ts: Date.parse(g('pubDate')), topic: topic.id };
   }).filter(i => i.title && i.link && !isNaN(i.ts));
 }
-async function clientFetch(){
-  const results = await Promise.allSettled(TOPICS.map(async t => {
-    const u = 'https://news.google.com/rss/search?q=' + encodeURIComponent(t.q + ' when:1d') + '&hl=en-IN&gl=IN&ceid=IN:en';
-    return parseFeed(await fetchText(u), t);
-  }));
-  const errors = results.filter(r => r.status === 'rejected').map(r => r.reason.message);
-  const seen = new Map();
-  results.forEach(r => r.status === 'fulfilled' && r.value.forEach(it => {
-    const k = it.title.toLowerCase().replace(/[^a-z0-9]+/g, ' ').slice(0, 80);
-    if (!seen.has(k)) seen.set(k, it);
-  }));
-  return { items: [...seen.values()].sort((a, b) => b.ts - a.ts).slice(0, 300),
-           topics: TOPICS.map(({ id, label }) => ({ id, label })), updatedAt: Date.now(), errors };
-}
-async function getData(manual){
-  if (location.protocol.startsWith('http') && !location.hostname.endsWith('github.io')) {
-    try {
-      const r = await fetch('/api/news' + (manual ? '?force=1' : ''), { cache: 'no-store' });
-      if (r.ok) { const d = await r.json(); if (d.items && d.items.length) return d; }
-    } catch (e) { /* fall through to direct fetch */ }
-  }
-  return clientFetch();
-}
+const feedUrl = q => 'https://news.google.com/rss/search?q=' + encodeURIComponent(q + ' when:1d') + '&hl=en-IN&gl=IN&ceid=IN:en';
+const followed = () => S.topics.filter(t => t.kind !== 'mute').slice(0, 20);
+const muteRe = () => termsRegex(S.topics.filter(t => t.kind === 'mute').flatMap(t => t.terms));
+const watchRe = () => termsRegex(S.topics.filter(t => t.kind === 'watch').flatMap(t => t.terms));
 
 async function load(manual){
-  const btn = $('refresh');
-  if (manual) btn.textContent = 'Refreshing…';
+  const btn = $('refresh'); if (manual) btn.textContent = '…';
   try {
-    const d = await getData(manual);
-    if (!d.items.length) throw new Error('No stories returned' + (d.errors && d.errors[0] ? ' (' + d.errors[0] + ')' : ''));
-    const first = state.seen.size === 0;
-    state.fresh = new Set();
-    for (const it of d.items) {
-      if (!state.seen.has(it.link)) { if (!first) state.fresh.add(it.link); state.seen.add(it.link); }
-    }
-    state.items = d.items; state.topics = d.topics; state.updatedAt = d.updatedAt; state.errors = d.errors || [];
-    state.loadedAt = Date.now();
-    renderTabs(); render(); status();
+    const fl = followed();
+    if (!fl.length) { S.items = []; S.updatedAt = Date.now(); S.loadedAt = Date.now(); build(); status(); btn.textContent = 'Refresh'; return; }
+    const res = await Promise.allSettled(fl.map(async t => parseFeed(await fetchText(feedUrl(t.q)), t)));
+    S.errors = res.filter(r => r.status === 'rejected').map(r => r.reason.message);
+    const map = new Map();
+    res.forEach(r => r.status === 'fulfilled' && r.value.forEach(it => { if (!map.has(it.link)) map.set(it.link, it); }));
+    if (!map.size) throw new Error('No stories returned' + (S.errors[0] ? ' (' + S.errors[0] + ')' : ''));
+    S.rawItems = [...map.values()];
+    S.updatedAt = Date.now(); S.loadedAt = Date.now();
+    // archive for Ask + trends (7 days, titles only)
+    const arch = new Map(S.archive.map(i => [i.link, i]));
+    S.rawItems.forEach(i => arch.set(i.link, { title: i.title, link: i.link, source: i.source, ts: i.ts, topic: i.topic }));
+    S.archive = [...arch.values()].filter(i => i.ts > Date.now() - 7 * 864e5).sort((a, b) => b.ts - a.ts).slice(0, 2500);
+    LS.set('archive', S.archive);
+    build(); status();
   } catch (e) {
-    $('dot').classList.add('stale'); $('upd').textContent = 'Update failed — retrying next hour';
-    if (!state.items.length) $('feed').innerHTML = '<div class="err">Could not load news. ' + esc(e.message) + '</div>';
+    $('dot').classList.add('stale'); $('upd').textContent = 'Update failed';
+    if (!S.clusters.length) $('feed').innerHTML = '<div class="err">Could not load news. ' + esc(e.message) + '<br><br><button class="btn" data-act="retry">Retry</button></div>';
   }
-  btn.textContent = 'Refresh now';
+  btn.textContent = 'Refresh';
 }
+
+function build(){
+  const mre = muteRe(), wre = watchRe(), now = Date.now();
+  S.items = (S.rawItems || []).filter(i => !(mre && mre.test(i.title)));
+  const first = S.seen.size === 0;
+  S.fresh = new Set();
+  S.items.forEach(i => { if (!S.seen.has(i.link)) { if (!first) S.fresh.add(i.link); S.seen.add(i.link); } });
+  S.clusters = clusterItems(S.items).map(c => analyze(c, now));
+  S.byKey = new Map();
+  for (const c of S.clusters) {
+    c.watch = !!(wre && wre.test(c.items.map(i => i.title).join(' . ')));
+    c.rank = c.impact.score + (c.watch ? 2.5 : 0);
+    S.byKey.set(c.key, c);
+  }
+  // history for Trends (counts each story once)
+  const day = new Date().toLocaleDateString('en-CA');
+  recordHistory(S.clusters, S.hist, S.counted, day);
+  LS.set('hist', S.hist); LS.set('counted', S.counted);
+  webAlerts();
+  renderTabs(); renderFeed(); if (S.view !== 'feed') renderView(S.view);
+}
+
+/* ---------- alerts ---------- */
+function qualifies(c){
+  const m = S.cfg.alerts.mode;
+  const hi = c.impact.level === 'High', w = c.watch;
+  return (m === 'high' && hi) || (m === 'watch' && w) || (m === 'both' && (hi || w));
+}
+function webAlerts(){
+  if (window.Android) return; // the Android worker handles background alerts
+  const a = S.cfg.alerts;
+  const todo = S.clusters.filter(c => qualifies(c) && !S.notified.has(c.key));
+  todo.forEach(c => S.notified.add(c.key));
+  if (S.first) { S.first = false; return; }          // baseline on first load
+  if (!a.on || !('Notification' in window) || Notification.permission !== 'granted') return;
+  todo.slice(0, 3).forEach(c => { try { const n = new Notification((c.watch ? '★ ' : '') + c.impact.level + ' impact', { body: c.title }); n.onclick = () => window.open(c.link, '_blank'); } catch (e) {} });
+}
+function syncNative(){
+  if (!window.Android || !window.Android.saveConfig) return;
+  try {
+    window.Android.saveConfig(JSON.stringify({
+      alerts: S.cfg.alerts,
+      queries: followed().map(t => t.q),
+      watch: S.topics.filter(t => t.kind === 'watch').flatMap(t => t.terms),
+      mute: S.topics.filter(t => t.kind === 'mute').flatMap(t => t.terms),
+    }));
+  } catch (e) {}
+}
+
+/* ---------- formatting ---------- */
+function ago(ts){ const m = Math.max(0, Math.round((Date.now() - ts) / 60000)); if (m < 1) return 'now'; if (m < 60) return m + 'm'; const h = Math.floor(m / 60); return h < 24 ? h + 'h' : Math.floor(h / 24) + 'd'; }
+const hhmm = ts => new Date(ts).toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
+const DIR = { pos:['▲','Positive'], neg:['▼','Negative'], mix:['◆','Mixed'], neu:['','Neutral'] };
+const topicLabel = id => (S.topics.find(t => t.id === id) || {}).label || id;
 
 function status(){
-  if (!state.updatedAt) { $('upd').textContent = 'Waiting for first fetch…'; return; }
-  const age = Date.now() - state.updatedAt;
-  $('dot').classList.toggle('stale', age > 2 * HOUR);
-  $('upd').textContent = 'Updated ' + new Date(state.updatedAt).toLocaleTimeString('en-IN', {hour:'2-digit',minute:'2-digit'}) + ' IST';
+  if (!S.updatedAt) return;
+  $('dot').classList.toggle('stale', Date.now() - S.updatedAt > 2 * HOUR);
+  $('upd').textContent = 'Updated ' + hhmm(S.updatedAt);
 }
 function tick(){
-  if (!state.loadedAt) return;
-  const left = Math.max(0, state.loadedAt + HOUR - Date.now());
-  const m = Math.floor(left / 60000), s = Math.floor(left % 60000 / 1000);
-  $('next').textContent = 'Next refresh in ' + m + ':' + String(s).padStart(2, '0');
+  $('date').textContent = new Date().toLocaleDateString('en-IN', { weekday:'short', day:'numeric', month:'short', year:'numeric' });
+  if (!S.loadedAt) return;
+  const left = Math.max(0, S.loadedAt + HOUR - Date.now());
+  $('next').textContent = 'Next ' + Math.floor(left / 60000) + ':' + String(Math.floor(left % 60000 / 1000)).padStart(2, '0');
   if (left === 0) load();
-  $('date').textContent = new Date().toLocaleDateString('en-IN', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
 }
 
+/* ---------- feed ---------- */
 function renderTabs(){
-  const tabs = [{id:'all', label:'All'}, ...state.topics];
-  $('tabs').innerHTML = tabs.map(t =>
-    `<button class="tab" role="tab" data-id="${t.id}" aria-selected="${t.id === state.active}">${esc(t.label)}</button>`).join('');
+  const tabs = [{ id:'all', label:'All' }, ...S.topics.filter(t => t.kind !== 'mute')];
+  if (!tabs.some(t => t.id === S.active)) S.active = 'all';
+  $('tabs').innerHTML = tabs.map(t => `<button class="tab ${t.id === S.active ? 'on' : ''}" data-tab="${esc(t.id)}">${t.kind === 'watch' ? '★ ' : ''}${esc(t.label)}</button>`).join('');
+  document.querySelectorAll('#sort button').forEach(b => b.classList.toggle('on', b.dataset.sort === S.cfg.sort));
+}
+function visible(){
+  const q = S.q.toLowerCase();
+  let list = S.clusters.filter(c => (S.active === 'all' || c.topics.has(S.active)) && (!q || c.items.some(i => i.title.toLowerCase().includes(q) || i.source.toLowerCase().includes(q))));
+  list.sort(S.cfg.sort === 'impact' ? (a, b) => b.rank - a.rank || b.ts - a.ts : (a, b) => b.ts - a.ts);
+  return list;
+}
+function metaHtml(c, withInsight){
+  const im = c.impact, [arr, dtxt] = DIR[im.dir];
+  const secs = im.sectors.slice(0, 2).map(s => `<span class="badge">${esc(s.name)}</span>`).join('');
+  return `<div class="meta"><span class="src">${esc(c.rep.source)}</span>` +
+    (c.sources.length > 1 ? `<span>+${c.sources.length - 1} more</span>` : '') +
+    (im.level !== 'Low' ? `<span class="badge ${im.level === 'High' ? 'hi' : 'med'}">${im.level.toUpperCase()}</span>` : '') +
+    (im.dir !== 'neu' ? `<span class="badge ${im.dir}">${arr} ${dtxt}</span>` : '') +
+    (c.watch ? '<span class="badge watch">★ Watch</span>' : '') +
+    (c.items.some(i => S.fresh.has(i.link)) ? '<span class="badge new">New</span>' : '') + secs +
+    (withInsight ? `<button class="lnk" data-act="insight" data-k="${esc(c.key)}">${S.openKeys.has(c.key) ? 'Hide insight' : 'Insight'}</button>` : '') + '</div>';
+}
+function infoBlock(c){ return `<div class="info" data-info="${esc(c.key)}" ${S.openKeys.has(c.key) ? '' : 'hidden'}>${S.openKeys.has(c.key) ? infographic(c) : ''}</div>`; }
+function renderFeed(){
+  const list = visible(), feed = $('feed');
+  if (!list.length) { feed.innerHTML = '<div class="empty">' + (S.clusters.length ? 'No stories match this filter.' : (followed().length ? 'No stories yet.' : 'You are not following any topics. Add some under Topics.')) + '</div>'; return; }
+  const [lead, ...rest] = list;
+  feed.innerHTML =
+    `<div class="lead"><a href="${esc(lead.link)}" target="_blank" rel="noopener noreferrer"><h3>${esc(lead.title)}</h3></a>${lead.impact.why ? `<p class="why">${esc(lead.impact.why)}</p>` : ''}${metaHtml(lead, true)}${infoBlock(lead)}</div>` +
+    `<div class="sec-h"><h2>${S.cfg.sort === 'impact' ? 'By impact' : 'Latest'}</h2><span>${list.length} stories · ${S.items.length} headlines</span></div>` +
+    rest.slice(0, 80).map(c => `<div class="row"><div class="t">${ago(c.ts)}</div><div><a class="h" href="${esc(c.link)}" target="_blank" rel="noopener noreferrer">${esc(c.title)}</a>${c.impact.level !== 'Low' || c.watch ? `<div class="why">${esc(c.impact.why)}</div>` : ''}${metaHtml(c, true)}${infoBlock(c)}</div></div>`).join('');
 }
 
-function filtered(){
-  const q = state.q.toLowerCase();
-  return state.items.filter(i =>
-    (state.active === 'all' || i.topic === state.active) &&
-    (!q || i.title.toLowerCase().includes(q) || i.source.toLowerCase().includes(q)));
-}
-
-function meta(i){
-  return `<div class="meta"><span class="src">${esc(i.source)}</span><span class="badge">${esc(label(i.topic))}</span>` +
-    (state.fresh.has(i.link) ? '<span class="badge new">New</span>' : '') + '</div>';
-}
-
-function render(){
-  const list = filtered();
-  const feed = $('feed');
-  if (!list.length) { feed.innerHTML = '<div class="empty">No stories match.</div>'; }
-  else {
-    const [lead, ...rest] = list;
-    feed.innerHTML =
-      `<div class="lead"><a href="${esc(lead.link)}" target="_blank" rel="noopener noreferrer"><h3>${esc(lead.title)}</h3>${meta(lead)}</a></div>` +
-      `<div class="sec-h"><h2>Latest</h2><span>${list.length} stories</span></div>` +
-      rest.slice(0, 120).map(i =>
-        `<a class="row" href="${esc(i.link)}" target="_blank" rel="noopener noreferrer"><div class="t">${ago(i.ts)}</div><div><div class="h">${esc(i.title)}</div>${meta(i)}</div></a>`).join('');
+/* ---------- infographic ---------- */
+function infographic(c){
+  const im = c.impact, lvl = Math.min(5, Math.max(1, Math.round(im.score / 1.4))), [, dtxt] = DIR[im.dir];
+  let h = `<div class="ig"><div class="ig-h"><div class="meter">${[1,2,3,4,5].map(i => `<i class="${i <= lvl ? 'on' : ''}"></i>`).join('')}</div><span>Impact ${im.level}</span><span class="dir ${im.dir}">${dtxt} for India</span><span>${c.sources.length} source${c.sources.length > 1 ? 's' : ''}</span></div>`;
+  if (im.figures.length) h += '<div class="ig-sec">Key figures</div><div class="figs">' + im.figures.map(f => `<div class="fig"><b>${esc(f.v)}</b><span>${esc(f.ctx)}</span></div>`).join('') + '</div>';
+  if (im.chain) h += '<div class="ig-sec">How it flows through</div><ul class="chain">' + im.chain.map(s => `<li>${esc(s)}</li>`).join('') + '</ul>';
+  if (im.sectors.length) {
+    const rows = im.sectors, H = rows.length * 20 + 4;
+    h += '<div class="ig-sec">Sector exposure (indicative)</div><svg viewBox="0 0 320 ' + H + '" role="img" aria-label="Sector exposure">' +
+      '<line class="axis" x1="215" x2="215" y1="0" y2="' + H + '"/>' + rows.map((s, i) => {
+        const y = i * 20 + 2, w = Math.abs(s.tilt) * 32, x = s.tilt < 0 ? 215 - w : 215;
+        return `<text x="0" y="${y + 12}">${esc(s.name)}</text>` + (s.tilt === 0 ? `<circle cx="215" cy="${y + 8}" r="2" fill="#666"/><text x="224" y="${y + 12}">watch</text>` : `<rect class="${s.tilt < 0 ? 'neg' : 'pos'}" x="${x}" y="${y + 2}" width="${w}" height="12"/>`);
+      }).join('') + '</svg>';
   }
-  // coverage table
-  const counts = {}; state.items.forEach(i => counts[i.topic] = (counts[i.topic] || 0) + 1);
-  const max = Math.max(1, ...Object.values(counts));
-  $('cov').querySelector('tbody').innerHTML =
-    `<tr class="click ${state.active==='all'?'on':''}" data-id="all"><td>All topics</td><td class="r">${state.items.length}</td></tr>` +
-    state.topics.map(t => `<tr class="click ${state.active===t.id?'on':''}" data-id="${t.id}"><td>${esc(t.label)}<div class="bar"><i style="width:${(counts[t.id]||0)/max*100}%"></i></div></td><td class="r">${counts[t.id] || 0}</td></tr>`).join('');
+  const ts = c.items.map(i => i.ts).sort((a, b) => a - b), t0 = ts[0], t1 = ts[ts.length - 1], span = t1 - t0;
+  h += '<div class="ig-sec">Coverage timeline</div><svg viewBox="0 0 320 52" role="img" aria-label="Coverage timeline"><line class="axis" x1="10" x2="310" y1="22" y2="22"/>' +
+    ts.map((t, i) => `<circle class="dotc" cx="${span ? 10 + (t - t0) / span * 300 : 160}" cy="${i % 2 ? 15 : 29}" r="3" opacity=".85"/>`).join('') +
+    `<text x="10" y="48">${hhmm(t0)}</text><text x="310" y="48" text-anchor="end">${hhmm(t1)}</text></svg>`;
+  h += `<div class="foot">${esc(c.sources.slice(0, 5).join(' · '))}${c.sources.length > 5 ? ' +' + (c.sources.length - 5) : ''}<br>Auto-generated from headlines — indicative only, verify at the source. Not investment advice.</div></div>`;
+  return h;
 }
 
-document.addEventListener('click', e => {
-  const el = e.target.closest('[data-id]');
-  if (el) { state.active = el.dataset.id; renderTabs(); render(); }
-});
-$('q').addEventListener('input', e => { state.q = e.target.value; render(); });
-$('refresh').addEventListener('click', () => load(true));
-document.addEventListener('visibilitychange', () => {
-  if (!document.hidden && Date.now() - state.loadedAt > HOUR) load();
-});
+/* ---------- views ---------- */
+function sparkline(vals){
+  const max = Math.max(1, ...vals), w = 84, h = 22;
+  const pts = vals.map((v, i) => [vals.length > 1 ? i / (vals.length - 1) * (w - 4) + 2 : w / 2, h - 3 - v / max * (h - 6)]);
+  const last = pts[pts.length - 1];
+  return `<svg class="spark" viewBox="0 0 ${w} ${h}"><polyline points="${pts.map(p => p.map(n => n.toFixed(1)).join(',')).join(' ')}"/><circle cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="2"/></svg>`;
+}
+function trendRows(prefix){
+  const days = Object.keys(S.hist).sort().slice(-14);
+  const keys = new Set(); days.forEach(d => Object.keys(S.hist[d]).forEach(k => k.startsWith(prefix) && keys.add(k)));
+  const rows = [...keys].map(k => {
+    const vals = days.map(d => (S.hist[d][k] || {}).n || 0), today = vals[vals.length - 1];
+    const prev = vals.slice(0, -1).filter(v => v > 0), avg = prev.length ? prev.reduce((a, b) => a + b, 0) / prev.length : 0;
+    const net = days.slice(-3).reduce((s, d) => s + ((S.hist[d][k] || {}).net || 0), 0);
+    return { name: k.slice(2), vals, today, avg, net, nDays: days.length, total: vals.reduce((a, b) => a + b, 0) };
+  }).sort((a, b) => b.today - a.today || b.total - a.total).slice(0, 12);
+  if (!rows.length) return '<tr><td colspan="4" class="empty">No data yet.</td></tr>';
+  return rows.map(r => {
+    const d = r.avg ? Math.round((r.today - r.avg) / r.avg * 100) : null;
+    return `<tr><td class="n"><i class="pill ${r.net > 0 ? 'pos' : r.net < 0 ? 'neg' : ''}"></i>${esc(r.name)}</td><td>${r.nDays > 1 ? sparkline(r.vals) : '—'}</td><td class="r n">${r.today}</td><td class="r ${d > 0 ? 'up' : 'dn'}">${d === null ? '—' : (d > 0 ? '▲ ' : '▼ ') + Math.abs(d) + '%'}</td></tr>`;
+  }).join('');
+}
+function viewTrends(){
+  const nd = Object.keys(S.hist).length;
+  return `<div class="panel-h">Coverage volume per theme · last 14 days · dot = recent tone (green positive, red negative)</div>
+  <table><thead><tr><th>Theme</th><th>Trend</th><th class="r">Today</th><th class="r">vs avg</th></tr></thead><tbody>${trendRows('T:')}</tbody></table>
+  <div class="panel-h" style="padding-top:22px">Sectors</div>
+  <table><thead><tr><th>Sector</th><th>Trend</th><th class="r">Today</th><th class="r">vs avg</th></tr></thead><tbody>${trendRows('S:')}</tbody></table>
+  <p class="note">${nd < 3 ? 'Trend lines build up as you use the app — each day adds a point (' + nd + ' day' + (nd === 1 ? '' : 's') + ' so far). “vs avg” appears once there is a prior day to compare with.' : 'Counts are distinct headlines per day. Rising coverage means a theme is heating up, not that it is good or bad.'}</p>`;
+}
+const ASK_CHIPS = ['Biggest stories today', 'What is negative for banks?', 'Crude oil this week', 'RBI and rates', 'Rupee', 'Anything positive today?'];
+function answerHtml(r){
+  const body = r.clusters.map(c => `<div class="row"><div class="t">${ago(c.ts)}</div><div><a class="h" href="${esc(c.link)}" target="_blank" rel="noopener noreferrer">${esc(c.title)}</a><div class="why">${esc(c.impact.why)}</div>${metaHtml(c, false)}</div></div>`).join('');
+  return `<div class="ans"><p>${esc(r.summary)}</p><div class="stat">Compiled on-device from ${S.archive.length} collected headlines (7-day memory). No AI model — ranking and tone are rule-based.</div>${body}</div>`;
+}
+function viewAsk(){
+  return `<div class="askbox"><input class="search" id="askq" placeholder="Ask about today's news…" aria-label="Ask the news"><button class="btn pri" data-act="ask">Ask</button></div>
+  <div class="chips">${ASK_CHIPS.map(c => `<button class="chip" data-chip="${esc(c)}">${esc(c)}</button>`).join('')}</div><div id="askout"></div>`;
+}
+function viewTopics(){
+  const kinds = [['follow', 'Follow'], ['watch', '★ Watch'], ['mute', 'Mute']];
+  const rows = S.topics.map((t, i) => `<div class="trow"><div class="lab">${esc(t.label)}<small>${t.kind === 'mute' ? 'hidden from every feed' : t.kind === 'watch' ? 'boosted and alert-eligible' : 'shown in your feed'}${t.builtin ? ' · built-in' : ''}</small></div>
+    <div class="seg">${kinds.map(([k, l]) => `<button class="${t.kind === k ? 'on' : ''}" data-act="kind" data-i="${i}" data-kind="${k}">${l}</button>`).join('')}</div><button class="x" data-act="remove" data-i="${i}" aria-label="Remove">✕</button></div>`).join('');
+  return `<div class="addbox"><input class="search" id="newtopic" placeholder="Add a topic, stock or sector (comma-separate alternatives)" aria-label="New topic" style="width:100%">
+    <div class="r"><div class="seg" id="newkind">${kinds.map(([k, l], i) => `<button class="${i === 0 ? 'on' : ''}" data-k="${k}">${l}</button>`).join('')}</div><button class="btn pri" data-act="add">Add</button><button class="btn" data-act="reset">Restore defaults</button></div>
+    <p class="note" style="padding-bottom:0"><b>Follow</b> fetches the topic. <b>★ Watch</b> also boosts it and enables alerts. <b>Mute</b> hides any headline containing the words (e.g. “cricket, IPL”). <b>✕ Remove</b> drops a topic you don't care either way about.</p></div>
+    ${rows || '<div class="empty">No topics. Add one above.</div>'}`;
+}
+function viewAlerts(){
+  const a = S.cfg.alerts, app = !!window.Android;
+  const perm = ('Notification' in window) ? Notification.permission : 'unsupported';
+  return `<div class="switch"><div>Alerts<div class="note" style="padding:0">${app ? 'The app checks in the background about once an hour, even when closed.' : 'Browser notifications only fire while this tab is open. The Android app can alert in the background.'}</div></div><button class="tog ${a.on ? 'on' : ''}" data-act="togalerts" aria-label="Toggle alerts"></button></div>
+  <div class="panel-h">Alert me about</div>
+  <div class="seg" id="almode">${[['high', 'High impact'], ['watch', '★ Watchlist'], ['both', 'Both']].map(([k, l]) => `<button class="${a.mode === k ? 'on' : ''}" data-act="almode" data-m="${k}">${l}</button>`).join('')}</div>
+  <div style="padding:16px 0;display:flex;gap:8px"><button class="btn" data-act="testalert">Send test alert</button></div>
+  <p class="note">${app ? '' : 'Notification permission: ' + esc(perm) + '. '}High impact uses the app's rule-based score, so expect the occasional miss or false alarm. Muted words are never alerted.</p>`;
+}
+function renderView(v){ const el = $('v-' + v); if (!el) return; if (v === 'trends') el.innerHTML = viewTrends(); if (v === 'ask') { if (!el.innerHTML) el.innerHTML = viewAsk(); } if (v === 'topics') el.innerHTML = viewTopics(); if (v === 'alerts') el.innerHTML = viewAlerts(); }
+function show(v){
+  S.view = v;
+  document.querySelectorAll('#nav button').forEach(b => b.classList.toggle('on', b.dataset.view === v));
+  document.querySelectorAll('.view').forEach(s => s.hidden = s.id !== 'v-' + v);
+  renderView(v);
+}
+function runAsk(q){
+  if (!q.trim()) return;
+  const r = answerQuery(q, S.archive);
+  $('askout').innerHTML = answerHtml(r);
+}
 
-load();
+/* ---------- events ---------- */
+document.addEventListener('click', e => {
+  const t = e.target.closest('button'); if (!t) return;
+  if (t.dataset.view) return show(t.dataset.view);
+  if (t.dataset.tab) { S.active = t.dataset.tab; renderTabs(); return renderFeed(); }
+  if (t.dataset.sort) { S.cfg.sort = t.dataset.sort; saveCfg(); renderTabs(); return renderFeed(); }
+  if (t.dataset.chip) { $('askq').value = t.dataset.chip; return runAsk(t.dataset.chip); }
+  if (t.parentElement && t.parentElement.id === 'newkind') { [...t.parentElement.children].forEach(b => b.classList.toggle('on', b === t)); return; }
+  const a = t.dataset.act; if (!a) return;
+  if (a === 'retry') return load(true);
+  if (a === 'insight') {
+    const k = t.dataset.k, c = S.byKey.get(k); if (!c) return;
+    const box = document.querySelector('[data-info="' + CSS.escape(k) + '"]');
+    if (S.openKeys.has(k)) { S.openKeys.delete(k); box.hidden = true; t.textContent = 'Insight'; }
+    else { S.openKeys.add(k); box.innerHTML = infographic(c); box.hidden = false; t.textContent = 'Hide insight'; }
+    return;
+  }
+  if (a === 'ask') return runAsk($('askq').value);
+  if (a === 'kind') { S.topics[+t.dataset.i].kind = t.dataset.kind; saveTopics(); renderView('topics'); return load(); }
+  if (a === 'remove') { S.topics.splice(+t.dataset.i, 1); saveTopics(); renderView('topics'); return load(); }
+  if (a === 'reset') { S.topics = DEFAULT_TOPICS(); saveTopics(); renderView('topics'); return load(); }
+  if (a === 'add') {
+    const raw = $('newtopic').value.trim(); if (!raw) return;
+    const kind = ($('newkind').querySelector('.on') || {}).dataset.k || 'follow';
+    const terms = raw.split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+    const label = terms.join(', ');
+    if (S.topics.some(x => x.label.toLowerCase() === label)) { $('newtopic').value = ''; return; }
+    S.topics.push({ id: 'c' + Date.now().toString(36), label, q: kind === 'mute' ? '' : topicQuery(terms), terms, kind });
+    saveTopics(); renderView('topics'); return load();
+  }
+  if (a === 'togalerts') {
+    S.cfg.alerts.on = !S.cfg.alerts.on;
+    if (S.cfg.alerts.on && !window.Android && 'Notification' in window && Notification.permission === 'default') Notification.requestPermission().then(() => renderView('alerts'));
+    saveCfg(); return renderView('alerts');
+  }
+  if (a === 'almode') { S.cfg.alerts.mode = t.dataset.m; saveCfg(); return renderView('alerts'); }
+  if (a === 'testalert') {
+    if (window.Android && window.Android.testAlert) return window.Android.testAlert();
+    if ('Notification' in window) { const go = () => new Notification('India Pulse', { body: 'Test alert — notifications are working.' }); Notification.permission === 'granted' ? go() : Notification.requestPermission().then(p => p === 'granted' && go()); }
+  }
+});
+document.addEventListener('keydown', e => { if (e.key === 'Enter') { if (e.target.id === 'askq') runAsk(e.target.value); if (e.target.id === 'newtopic') document.querySelector('[data-act="add"]').click(); } });
+$('q').addEventListener('input', e => { S.q = e.target.value; renderFeed(); });
+$('refresh').addEventListener('click', () => load(true));
+document.addEventListener('visibilitychange', () => { if (!document.hidden && Date.now() - S.loadedAt > HOUR) load(); });
+
+renderTabs(); tick(); syncNative(); load();
 setInterval(tick, 1000);
-setInterval(() => load(), HOUR);           // hourly auto-refresh
-setInterval(() => { render(); status(); }, 60000); // keep relative times fresh
+setInterval(() => { renderFeed(); status(); }, 60000);
 </script>
 </body>
 </html>

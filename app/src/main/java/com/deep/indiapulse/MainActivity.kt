@@ -1,8 +1,18 @@
 package com.deep.indiapulse
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import org.json.JSONObject
+import java.util.concurrent.TimeUnit
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -37,6 +47,20 @@ class MainActivity : Activity() {
     /** Native HTTP for the feed page: no CORS, no proxies. Result is returned base64-encoded.
      *  Only attached to the feed WebView — never to the article reader. */
     inner class Bridge {
+        /** Page saves topics / watch / mute / alert settings here; the hourly worker reads them. */
+        @JavascriptInterface
+        fun saveConfig(json: String) {
+            getSharedPreferences("ip", MODE_PRIVATE).edit().putString("config", json).apply()
+            val on = try { JSONObject(json).optJSONObject("alerts")?.optBoolean("on") ?: false } catch (e: Exception) { false }
+            runOnUiThread { if (on) { askNotificationPermission(); scheduleAlerts() } else cancelAlerts() }
+        }
+
+        @JavascriptInterface
+        fun testAlert() {
+            runOnUiThread { askNotificationPermission() }
+            Notifier.post(this@MainActivity, 1, "India Pulse test alert", "Notifications are working. Tap to open a sample story.", "https://news.google.com/")
+        }
+
         @JavascriptInterface
         fun fetch(id: Int, url: String) {
             if (!url.startsWith("https://news.google.com/")) {
@@ -60,6 +84,28 @@ class MainActivity : Activity() {
     private fun reply(id: Int, ok: Boolean, bytes: ByteArray) {
         val b64 = Base64.encodeToString(bytes, Base64.NO_WRAP)
         runOnUiThread { web.evaluateJavascript("window.__nativeDone($id,$ok,'$b64')", null) }
+    }
+
+    private fun askNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= 33 && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1)
+        }
+    }
+
+    private fun scheduleAlerts() {
+        val req = PeriodicWorkRequestBuilder<AlertWorker>(60, TimeUnit.MINUTES)
+            .setConstraints(Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build())
+            .build()
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork("alerts", ExistingPeriodicWorkPolicy.UPDATE, req)
+    }
+
+    private fun cancelAlerts() {
+        WorkManager.getInstance(this).cancelUniqueWork("alerts")
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        intent.getStringExtra("url")?.let { openReader(it) }
     }
 
     private fun dp(v: Int) = (v * resources.displayMetrics.density).toInt()
@@ -174,6 +220,7 @@ class MainActivity : Activity() {
             addView(readerPane, FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT))
         })
         web.loadUrl("file:///android_asset/index.html")
+        intent?.getStringExtra("url")?.let { openReader(it) }   // opened from a notification
     }
 
     override fun onResume() {
