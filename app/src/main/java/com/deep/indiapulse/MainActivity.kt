@@ -31,7 +31,7 @@ class MainActivity : Activity() {
     private lateinit var reader: WebView       // in-app article reader
     private lateinit var readerPane: LinearLayout
     private lateinit var readerTitle: TextView
-    private lateinit var progress: ProgressBar
+    private lateinit var progressBar: ProgressBar
     private var readerUrl: String = ""
 
     /** Native HTTP for the feed page: no CORS, no proxies. Result is returned base64-encoded.
@@ -94,7 +94,7 @@ class MainActivity : Activity() {
             addView(readerTitle, LinearLayout.LayoutParams(0, WRAP_CONTENT, 1f))
             addView(external, LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT))
         }
-        progress = ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal).apply {
+        progressBar = ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal).apply {
             max = 100
             progressDrawable.setTint(Color.parseColor("#D6B36A"))
             visibility = View.GONE
@@ -106,8 +106,8 @@ class MainActivity : Activity() {
             CookieManager.getInstance().setAcceptThirdPartyCookies(this, true)
             webChromeClient = object : WebChromeClient() {
                 override fun onProgressChanged(v: WebView, p: Int) {
-                    progress.progress = p
-                    progress.visibility = if (p in 1..99) View.VISIBLE else View.GONE
+                    progressBar.progress = p
+                    progressBar.visibility = if (p in 1..99) View.VISIBLE else View.GONE
                 }
             }
             webViewClient = object : WebViewClient() {
@@ -129,7 +129,7 @@ class MainActivity : Activity() {
             visibility = View.GONE
             isClickable = true   // swallow touches so the feed underneath doesn't react
             addView(bar, LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT))
-            addView(progress, LinearLayout.LayoutParams(MATCH_PARENT, dp(2)))
+            addView(progressBar, LinearLayout.LayoutParams(MATCH_PARENT, dp(2)))
             addView(reader, LinearLayout.LayoutParams(MATCH_PARENT, 0, 1f))
         }
     }
